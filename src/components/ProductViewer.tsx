@@ -2,10 +2,10 @@
 import React, { useState } from "react";
 import { Lightbulb } from "lucide-react";
 import ThreeScene from "./ThreeScene";
-import AnimatedColorSelector from "./AnimatedColorSelector";
 import { MODEL_DATA } from "./CeilingFanModels";
 import { useIsMobile } from "@/hooks/use-mobile";
 import LuxuryModelSelector from "./LuxuryModelSelector";
+import { getColorButtonStyle } from "@/utils/modelSelectorStyles";
 
 const COLOR_OPTIONS = [
   { name: "Black", value: "black", className: "bg-black" },
@@ -41,14 +41,24 @@ const ProductViewer = () => {
         {/* Control panel - positioned absolutely at the bottom of the scene */}
         <div className="absolute bottom-4 left-0 right-0 flex justify-between items-center px-6">
           {/* Body Color Selection - Left */}
-          <div className="relative z-20">
-            <AnimatedColorSelector 
-              title="Body"
-              options={COLOR_OPTIONS} 
-              selectedColor={bodyColor} 
-              onSelectColor={setBodyColor}
-              position="left"
-            />
+          <div className="flex flex-col items-center gap-2 z-20">
+            <span className="text-sm font-medium text-gray-700">Body</span>
+            <div className="flex gap-3">
+              {COLOR_OPTIONS.map((option) => {
+                const isSelected = bodyColor === option.value;
+                const { className } = getColorButtonStyle(isSelected, option.className);
+                
+                return (
+                  <button
+                    key={option.value}
+                    className={className}
+                    onClick={() => setBodyColor(option.value)}
+                    title={option.name}
+                    aria-label={`Set body color to ${option.name}`}
+                  />
+                );
+              })}
+            </div>
           </div>
           
           {/* LED Light Button - Center */}
@@ -60,13 +70,10 @@ const ProductViewer = () => {
                 ? 'bg-amber-500 text-white shadow-amber-300 shadow-lg' 
                 : 'bg-gray-300 text-gray-600'}
               transform hover:scale-105
+              w-14 h-14
             `}
             aria-label="Toggle LED Light"
             title="LED Light"
-            style={{ 
-              width: '50px', 
-              height: '50px',
-            }}
           >
             <Lightbulb 
               size={24} 
@@ -75,20 +82,25 @@ const ProductViewer = () => {
           </button>
           
           {/* Blade Color Selection - Right */}
-          <div className="relative z-20">
-            <AnimatedColorSelector 
-              title="Blades"
-              options={COLOR_OPTIONS} 
-              selectedColor={bladeColor} 
-              onSelectColor={setBladeColor} 
-              position="right"
-            />
+          <div className="flex flex-col items-center gap-2 z-20">
+            <span className="text-sm font-medium text-gray-700">Blades</span>
+            <div className="flex gap-3">
+              {COLOR_OPTIONS.map((option) => {
+                const isSelected = bladeColor === option.value;
+                const { className } = getColorButtonStyle(isSelected, option.className);
+                
+                return (
+                  <button
+                    key={option.value}
+                    className={className}
+                    onClick={() => setBladeColor(option.value)}
+                    title={option.name}
+                    aria-label={`Set blade color to ${option.name}`}
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
-        
-        {/* Display the currently selected model name */}
-        <div className="absolute top-4 right-6 bg-white/80 px-3 py-1 rounded-lg shadow-sm">
-          <h3 className="text-gray-800 font-medium">{MODEL_DATA.find(m => m.id === modelType)?.name || "Classic"} Model</h3>
         </div>
       </div>
     </div>

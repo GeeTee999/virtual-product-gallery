@@ -1,7 +1,7 @@
 
 import React from "react";
-import { FanModel } from "./ModelSelector";
-import { getModelItemStyle } from "../utils/modelSelectorStyles";
+import { FanModel } from "./LuxuryModelSelector";
+import { motion } from "framer-motion";
 
 interface ModelItemProps {
   model: FanModel;
@@ -18,20 +18,35 @@ const ModelItem: React.FC<ModelItemProps> = ({
   itemCount,
   onSelect
 }) => {
-  const { transform, className } = getModelItemStyle(index, activeIndex, itemCount);
+  const isActive = index === activeIndex;
+  
+  // Only render the active model
+  if (!isActive) return null;
   
   return (
-    <div
+    <motion.div
       key={model.id}
-      style={{ transform }}
-      className={className}
-      onClick={(e) => {
-        e.stopPropagation();
-        onSelect();
-      }}
+      className="absolute top-0 left-0 cursor-pointer"
+      initial={{ x: 250, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: -250, opacity: 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      onClick={onSelect}
     >
-      {model.name}
-    </div>
+      <h2 className="font-serif text-3xl text-gray-800 tracking-wider">
+        {model.name}
+      </h2>
+      {model.description && (
+        <motion.p 
+          className="text-sm text-gray-500 mt-1 italic"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.3 }}
+        >
+          {model.description}
+        </motion.p>
+      )}
+    </motion.div>
   );
 };
 
