@@ -2,17 +2,21 @@
 import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment, ContactShadows, OrbitControls } from "@react-three/drei";
-import CeilingFanModel from "./CeilingFanModel";
+import { FanModels } from "./CeilingFanModels";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ThreeSceneProps {
   fanColor: string;
   bladeColor: string;
   ledLightOn: boolean;
+  modelType: string;
 }
 
-const ThreeScene = ({ fanColor, bladeColor, ledLightOn }: ThreeSceneProps) => {
+const ThreeScene = ({ fanColor, bladeColor, ledLightOn, modelType }: ThreeSceneProps) => {
   const isMobile = useIsMobile();
+  
+  // Get the appropriate fan model component
+  const FanModel = FanModels[modelType as keyof typeof FanModels] || FanModels.classic;
   
   return (
     <div className={`w-full ${isMobile ? 'h-[450px]' : 'h-[550px]'} mx-auto`}>
@@ -34,7 +38,7 @@ const ThreeScene = ({ fanColor, bladeColor, ledLightOn }: ThreeSceneProps) => {
         />
         <pointLight position={[-10, -10, -10]} intensity={0.5} />
         <Suspense fallback={null}>
-          <CeilingFanModel 
+          <FanModel 
             fanColor={fanColor} 
             bladeColor={bladeColor}
             ledLightOn={ledLightOn}

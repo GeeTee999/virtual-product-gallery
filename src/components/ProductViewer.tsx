@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Lightbulb } from "lucide-react";
 import ThreeScene from "./ThreeScene";
 import AnimatedColorSelector from "./AnimatedColorSelector";
+import ModelSelector from "./ModelSelector";
+import { MODEL_DATA } from "./CeilingFanModels";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const COLOR_OPTIONS = [
@@ -16,6 +18,7 @@ const ProductViewer = () => {
   const [bodyColor, setBodyColor] = useState("dark");
   const [bladeColor, setBladeColor] = useState("dark");
   const [ledLightOn, setLedLightOn] = useState(false);
+  const [modelType, setModelType] = useState("classic");
   const isMobile = useIsMobile();
 
   return (
@@ -24,7 +27,15 @@ const ProductViewer = () => {
         <ThreeScene 
           fanColor={bodyColor} 
           bladeColor={bladeColor} 
-          ledLightOn={ledLightOn} 
+          ledLightOn={ledLightOn}
+          modelType={modelType} 
+        />
+        
+        {/* Model selector */}
+        <ModelSelector 
+          models={MODEL_DATA}
+          selectedModel={modelType}
+          onSelectModel={setModelType}
         />
         
         {/* Control panel - positioned absolutely at the bottom of the scene */}
@@ -48,12 +59,14 @@ const ProductViewer = () => {
               ${ledLightOn 
                 ? 'bg-amber-500 text-white shadow-amber-300 shadow-lg' 
                 : 'bg-gray-300 text-gray-600'}
+              transform hover:scale-105
             `}
             aria-label="Toggle LED Light"
             title="LED Light"
+            style={{ width: '36px', height: '36px' }}
           >
             <Lightbulb 
-              size={24} 
+              size={20} 
               className={`${ledLightOn ? 'animate-pulse' : ''}`}
             />
           </button>
@@ -68,6 +81,11 @@ const ProductViewer = () => {
               position="right"
             />
           </div>
+        </div>
+        
+        {/* Display the currently selected model name */}
+        <div className="absolute top-4 right-6 bg-white/80 px-3 py-1 rounded-lg shadow-sm">
+          <h3 className="text-gray-800 font-medium">{MODEL_DATA.find(m => m.id === modelType)?.name || "Classic"} Model</h3>
         </div>
       </div>
     </div>

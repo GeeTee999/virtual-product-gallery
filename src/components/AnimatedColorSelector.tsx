@@ -42,7 +42,8 @@ const AnimatedColorSelector = ({
   return (
     <div 
       className="relative"
-      onMouseLeave={() => setIsOpen(false)}
+      // Changed to only close on explicit close, not on hover out
+      // onMouseLeave={() => setIsOpen(false)}
     >
       {/* Main button showing selected color */}
       <button
@@ -90,14 +91,25 @@ const AnimatedColorSelector = ({
               }}
               onClick={() => {
                 onSelectColor(option.value);
-                // Don't close immediately so user can see their selection
-                setTimeout(() => setIsOpen(false), 500);
+                // Don't close the picker so user can select more colors
+                // setTimeout(() => setIsOpen(false), 500);
               }}
               aria-label={`Select ${option.name}`}
               title={option.name}
             />
           );
         })}
+        
+        {/* Added explicit close button */}
+        {isOpen && (
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 text-xs bg-gray-200 px-2 py-1 rounded-full"
+            aria-label="Close color picker"
+          >
+            Done
+          </button>
+        )}
       </div>
     </div>
   );
