@@ -27,19 +27,21 @@ const AnimatedColorSelector = ({
   // Find the selected color option to display in the button
   const selectedOption = options.find(opt => opt.value === selectedColor) || options[0];
   
-  // Position styles based on left/right
-  const positionClasses = position === "left" 
-    ? "items-start" 
-    : "items-end";
-  
-  // Colors container positioning
-  const colorsContainerClasses = position === "left"
-    ? "left-0 origin-left"
-    : "right-0 origin-right";
+  // Calculate positions for the circle of colors
+  const calculatePosition = (index: number, total: number) => {
+    const angleStep = (2 * Math.PI) / total;
+    const angle = index * angleStep;
+    const radius = 50; // Distance from center button
     
+    const x = Math.cos(angle) * radius;
+    const y = Math.sin(angle) * radius;
+    
+    return { x, y };
+  };
+  
   return (
     <div 
-      className={`relative flex flex-col ${positionClasses}`}
+      className="relative"
       onMouseLeave={() => setIsOpen(false)}
     >
       {/* Main button showing selected color */}
@@ -55,32 +57,36 @@ const AnimatedColorSelector = ({
         aria-label={`Select ${title} color: currently ${selectedOption.name}`}
         title={`${title} Color: ${selectedOption.name}`}
       >
-        <span className="absolute -bottom-7 text-xs font-semibold text-gray-700">{title}</span>
+        <span className="absolute -bottom-7 text-xs font-semibold text-center text-gray-700 w-16 -ml-3">{title}</span>
       </button>
       
-      {/* Animated color options */}
+      {/* Circular color options */}
       <div 
         className={`
-          absolute top-0 ${colorsContainerClasses}
+          absolute top-0 left-0
+          w-full h-full
           transition-all duration-300 transform
           ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'}
         `}
       >
-        <div className="flex flex-col gap-2 p-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg">
-          {options.map((option, index) => (
+        {options.map((option, index) => {
+          const { x, y } = calculatePosition(index, options.length);
+          
+          return (
             <button
               key={option.value}
               className={`
-                w-8 h-8 rounded-full border-2 transition-all transform
+                absolute w-8 h-8 rounded-full border-2 transition-all transform
                 ${selectedColor === option.value 
                   ? 'border-blue-500 scale-110 shadow-md' 
                   : 'border-gray-300 hover:scale-105'}
                 ${option.className}
                 animate-fade-in
-                transition-all duration-200
               `}
               style={{ 
-                animationDelay: `${index * 50}ms`,
+                transform: `translate(${x}px, ${y}px)`,
+                transitionDelay: `${index * 50}ms`,
+                zIndex: 20
               }}
               onClick={() => {
                 onSelectColor(option.value);
@@ -90,8 +96,8 @@ const AnimatedColorSelector = ({
               aria-label={`Select ${option.name}`}
               title={option.name}
             />
-          ))}
-        </div>
+          );
+        })}
       </div>
     </div>
   );

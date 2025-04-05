@@ -26,26 +26,25 @@ const ProductViewer = () => {
           bladeColor={bladeColor} 
           ledLightOn={ledLightOn} 
         />
-      </div>
-      
-      <div className="flex justify-between items-center mt-2 px-2 relative">
-        {/* Body Color Selection - Left */}
-        <div className="flex-1 flex justify-start">
-          <AnimatedColorSelector 
-            title="Body"
-            options={COLOR_OPTIONS} 
-            selectedColor={bodyColor} 
-            onSelectColor={setBodyColor}
-            position="left"
-          />
-        </div>
         
-        {/* LED Light Button - Center */}
-        <div className="mx-4">
+        {/* Control panel - positioned absolutely at the bottom of the scene */}
+        <div className="absolute bottom-4 left-0 right-0 flex justify-between items-center px-6">
+          {/* Body Color Selection - Left */}
+          <div className="relative z-20">
+            <AnimatedColorSelector 
+              title="Body"
+              options={COLOR_OPTIONS} 
+              selectedColor={bodyColor} 
+              onSelectColor={setBodyColor}
+              position="left"
+            />
+          </div>
+          
+          {/* LED Light Button - Center */}
           <button
             onClick={() => setLedLightOn(prev => !prev)}
             className={`
-              p-2 rounded-full transition-all duration-300 flex items-center justify-center
+              p-2 rounded-full transition-all duration-300 flex items-center justify-center z-10
               ${ledLightOn 
                 ? 'bg-amber-500 text-white shadow-amber-300 shadow-lg' 
                 : 'bg-gray-300 text-gray-600'}
@@ -58,17 +57,17 @@ const ProductViewer = () => {
               className={`${ledLightOn ? 'animate-pulse' : ''}`}
             />
           </button>
-        </div>
-        
-        {/* Blade Color Selection - Right */}
-        <div className="flex-1 flex justify-end">
-          <AnimatedColorSelector 
-            title="Blades"
-            options={COLOR_OPTIONS} 
-            selectedColor={bladeColor} 
-            onSelectColor={setBladeColor} 
-            position="right"
-          />
+          
+          {/* Blade Color Selection - Right */}
+          <div className="relative z-20">
+            <AnimatedColorSelector 
+              title="Blades"
+              options={COLOR_OPTIONS} 
+              selectedColor={bladeColor} 
+              onSelectColor={setBladeColor} 
+              position="right"
+            />
+          </div>
         </div>
       </div>
     </div>
