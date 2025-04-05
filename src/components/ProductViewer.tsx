@@ -13,10 +13,10 @@ const COLOR_OPTIONS = [
 ];
 
 const ProductViewer = () => {
-  const [selectedColor, setSelectedColor] = useState("dark");
+  const [bodyColor, setBodyColor] = useState("dark");
+  const [bladeColor, setBladeColor] = useState("dark");
   const [features, setFeatures] = useState({
     ledLight: true,
-    wifi: false,
   });
 
   const handleToggleFeature = (feature: keyof typeof features) => {
@@ -29,7 +29,11 @@ const ProductViewer = () => {
   return (
     <div className="w-full max-w-6xl mx-auto px-4">
       <div className="relative">
-        <ThreeScene fanColor={selectedColor} />
+        <ThreeScene 
+          fanColor={bodyColor} 
+          bladeColor={bladeColor} 
+          ledLightOn={features.ledLight} 
+        />
         
         {/* Navigation Controls */}
         <div className="absolute top-1/2 left-0 transform -translate-y-1/2">
@@ -51,25 +55,33 @@ const ProductViewer = () => {
         </div>
       </div>
       
-      {/* Color Selection */}
+      {/* Body Color Selection */}
       <ColorSelector 
+        title="בחר צבע גוף"
+        description="צבע גוף המאוורר"
+        englishCaption="Fan body color selection"
         options={COLOR_OPTIONS} 
-        selectedColor={selectedColor} 
-        onSelectColor={setSelectedColor} 
+        selectedColor={bodyColor} 
+        onSelectColor={setBodyColor} 
+      />
+      
+      {/* Blade Color Selection */}
+      <ColorSelector 
+        title="בחר צבע להבים"
+        description="צבע להבי המאוורר"
+        englishCaption="Fan blades color selection"
+        options={COLOR_OPTIONS} 
+        selectedColor={bladeColor} 
+        onSelectColor={setBladeColor} 
       />
       
       {/* Feature Toggles */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8 max-w-lg mx-auto">
+      <div className="my-8 max-w-lg mx-auto">
         <FeatureToggle 
           label="LED Light" 
           isActive={features.ledLight} 
           onToggle={() => handleToggleFeature("ledLight")}
           isSelected={true} 
-        />
-        <FeatureToggle 
-          label="Wi-Fi" 
-          isActive={features.wifi} 
-          onToggle={() => handleToggleFeature("wifi")}
         />
       </div>
     </div>

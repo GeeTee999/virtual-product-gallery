@@ -6,9 +6,11 @@ import CeilingFanModel from "./CeilingFanModel";
 
 interface ThreeSceneProps {
   fanColor: string;
+  bladeColor: string;
+  ledLightOn: boolean;
 }
 
-const ThreeScene = ({ fanColor }: ThreeSceneProps) => {
+const ThreeScene = ({ fanColor, bladeColor, ledLightOn }: ThreeSceneProps) => {
   return (
     <div className="w-full h-[500px] md:h-[600px]">
       <Canvas shadows camera={{ position: [0, 0, 5], fov: 50 }}>
@@ -22,7 +24,11 @@ const ThreeScene = ({ fanColor }: ThreeSceneProps) => {
         />
         <pointLight position={[-10, -10, -10]} intensity={0.5} />
         <Suspense fallback={null}>
-          <CeilingFanModel fanColor={fanColor} />
+          <CeilingFanModel 
+            fanColor={fanColor} 
+            bladeColor={bladeColor}
+            ledLightOn={ledLightOn}
+          />
           <Environment preset="apartment" />
           <ContactShadows 
             position={[0, -1.5, 0]} 
