@@ -44,8 +44,6 @@ const ModelSelector = ({ models, selectedModel, onSelectModel }: ModelSelectorPr
         opts={{
           loop: true,
           align: "center",
-          // Fix: Use "y" instead of "vertical" for the direction
-          direction: "y",
         }}
         orientation="vertical"
         className="h-48 rounded-full"
