@@ -45,16 +45,18 @@ const LuxuryModelSelector: React.FC<ModelSelectorProps> = ({
 
   return (
     <div className="relative h-24">
-      <AnimatePresence mode="wait">
+      <AnimatePresence initial={false}>
         {models.map((model, index) => (
-          <ModelItem
-            key={model.id}
-            model={model}
-            index={index}
-            activeIndex={activeIndex}
-            itemCount={models.length}
-            onSelect={() => {}}
-          />
+          index === activeIndex && (
+            <ModelItem
+              key={model.id}
+              model={model}
+              index={index}
+              activeIndex={activeIndex}
+              itemCount={models.length}
+              onSelect={() => {}}
+            />
+          )
         ))}
       </AnimatePresence>
       

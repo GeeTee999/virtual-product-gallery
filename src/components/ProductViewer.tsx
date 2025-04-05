@@ -23,11 +23,6 @@ const ProductViewer = () => {
   const [bladeMenuOpen, setBladeMenuOpen] = useState(false);
   const isMobile = useIsMobile();
 
-  // Get styles for body color menu
-  const bodyMenuStyles = getCircularMenuStyles(bodyMenuOpen, 'left');
-  // Get styles for blade color menu
-  const bladeMenuStyles = getCircularMenuStyles(bladeMenuOpen, 'right');
-
   return (
     <div className="w-full mx-auto px-2 flex flex-col">
       <div className="relative">
@@ -39,7 +34,7 @@ const ProductViewer = () => {
         />
         
         {/* Luxury Model selector - moved lower */}
-        <div className="absolute top-16 left-8 z-40 w-1/3">
+        <div className="absolute top-32 left-8 z-40 w-1/3">
           <LuxuryModelSelector 
             models={MODEL_DATA}
             selectedModel={modelType}
@@ -69,125 +64,77 @@ const ProductViewer = () => {
           </button>
         </div>
         
-        {/* Body Color Circular Menu */}
-        <div className="fixed left-4 bottom-4 transition-all duration-300 z-30">
-          <div className={`relative ${bodyMenuOpen ? 'active' : ''}`}>
-            {/* Toggle button */}
+        {/* Body Color Menu - Left Bottom */}
+        <div className="fixed left-4 bottom-4 z-30">
+          <div className="relative">
             <button 
               onClick={() => setBodyMenuOpen(!bodyMenuOpen)}
-              className={`
-                flex items-center justify-center w-14 h-14 rounded-full 
-                bg-amber-500 text-white shadow-lg cursor-pointer z-40
-                hover:bg-amber-600 transition-all duration-300
-              `}
+              className="flex items-center justify-center w-14 h-14 rounded-full bg-amber-500 text-white shadow-lg hover:bg-amber-600 transition-colors"
               aria-label="Toggle body color menu"
             >
               <Palette size={24} className={`transition-transform duration-300 ${bodyMenuOpen ? 'rotate-45' : ''}`} />
             </button>
             
-            {/* Circular backdrop */}
-            <div className={`
-              absolute top-0 left-0 w-14 h-14 rounded-full
-              bg-amber-500 transition-all duration-500 ease-in-out
-              ${bodyMenuOpen ? 'scale-[5]' : 'scale-100'}
-              z-20
-            `}></div>
-            
-            {/* Menu items */}
-            <div className="absolute top-0 left-0 w-full h-full z-30">
-              {bodyMenuOpen && COLOR_OPTIONS.map((color, index) => {
-                const angles = [-45, -135, -225, -315]; // Adjusted angles for better distribution
-                const angle = angles[index];
-                const radian = (angle * Math.PI) / 180;
-                const distance = 70;
-                const x = distance * Math.cos(radian);
-                const y = distance * Math.sin(radian);
-                const isSelected = bodyColor === color.value;
-                const { className } = getColorButtonStyle(isSelected, color.className);
-                
-                return (
-                  <button
-                    key={color.value}
-                    style={{
-                      transform: `translate(${x}px, ${y}px)`,
-                      position: 'absolute',
-                      top: '0',
-                      left: '0',
-                      transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                      transitionDelay: `${index * 0.05}s`
-                    }}
-                    className={className}
-                    onClick={() => {
-                      setBodyColor(color.value);
-                      setBodyMenuOpen(false);
-                    }}
-                    title={`Body: ${color.name}`}
-                    aria-label={`Set body color to ${color.name}`}
-                  />
-                );
-              })}
-            </div>
+            {bodyMenuOpen && (
+              <div className="absolute bottom-16 left-0 flex flex-col gap-3 items-center">
+                {COLOR_OPTIONS.map((color, index) => {
+                  const isSelected = bodyColor === color.value;
+                  return (
+                    <button
+                      key={color.value}
+                      className={`
+                        w-10 h-10 rounded-full border-2 transition-all
+                        ${isSelected ? 'border-amber-500 shadow-lg' : 'border-gray-300'}
+                        ${color.className}
+                      `}
+                      onClick={() => {
+                        setBodyColor(color.value);
+                        setBodyMenuOpen(false);
+                      }}
+                      title={`Body: ${color.name}`}
+                      aria-label={`Set body color to ${color.name}`}
+                    />
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
         
-        {/* Blade Color Circular Menu */}
-        <div className="fixed right-4 bottom-4 transition-all duration-300 z-30">
-          <div className={`relative ${bladeMenuOpen ? 'active' : ''}`}>
-            {/* Toggle button */}
+        {/* Blade Color Menu - Right Bottom */}
+        <div className="fixed right-4 bottom-4 z-30">
+          <div className="relative">
             <button 
               onClick={() => setBladeMenuOpen(!bladeMenuOpen)}
-              className={`
-                flex items-center justify-center w-14 h-14 rounded-full 
-                bg-amber-500 text-white shadow-lg cursor-pointer z-40
-                hover:bg-amber-600 transition-all duration-300
-              `}
+              className="flex items-center justify-center w-14 h-14 rounded-full bg-amber-500 text-white shadow-lg hover:bg-amber-600 transition-colors"
               aria-label="Toggle blade color menu"
             >
               <Plus size={24} className={`transition-transform duration-300 ${bladeMenuOpen ? 'rotate-45' : ''}`} />
             </button>
             
-            {/* Circular backdrop */}
-            <div className={`
-              absolute top-0 left-0 w-14 h-14 rounded-full
-              bg-amber-500 transition-all duration-500 ease-in-out
-              ${bladeMenuOpen ? 'scale-[5]' : 'scale-100'}
-              z-20
-            `}></div>
-            
-            {/* Menu items */}
-            <div className="absolute top-0 left-0 w-full h-full z-30">
-              {bladeMenuOpen && COLOR_OPTIONS.map((color, index) => {
-                const angles = [45, 135, 225, 315]; // Adjusted angles for better distribution
-                const angle = angles[index];
-                const radian = (angle * Math.PI) / 180;
-                const distance = 70;
-                const x = distance * Math.cos(radian);
-                const y = distance * Math.sin(radian);
-                const isSelected = bladeColor === color.value;
-                const { className } = getColorButtonStyle(isSelected, color.className);
-                
-                return (
-                  <button
-                    key={color.value}
-                    style={{
-                      transform: `translate(${x}px, ${y}px)`,
-                      position: 'absolute',
-                      top: '0',
-                      left: '0',
-                      transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                      transitionDelay: `${index * 0.05}s`
-                    }}
-                    className={className}
-                    onClick={() => {
-                      setBladeColor(color.value);
-                      setBladeMenuOpen(false);
-                    }}
-                    title={`Blades: ${color.name}`}
-                    aria-label={`Set blade color to ${color.name}`}
-                  />
-                );
-              })}
-            </div>
+            {bladeMenuOpen && (
+              <div className="absolute bottom-16 right-0 flex flex-col gap-3 items-center">
+                {COLOR_OPTIONS.map((color, index) => {
+                  const isSelected = bladeColor === color.value;
+                  return (
+                    <button
+                      key={color.value}
+                      className={`
+                        w-10 h-10 rounded-full border-2 transition-all
+                        ${isSelected ? 'border-amber-500 shadow-lg' : 'border-gray-300'}
+                        ${color.className}
+                      `}
+                      onClick={() => {
+                        setBladeColor(color.value);
+                        setBladeMenuOpen(false);
+                      }}
+                      title={`Blades: ${color.name}`}
+                      aria-label={`Set blade color to ${color.name}`}
+                    />
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>
