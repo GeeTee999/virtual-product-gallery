@@ -95,23 +95,23 @@ export const IndustrialFanModel = ({
         );
       })}
       
-      {/* Fan blades group - 3 wide industrial blades */}
+      {/* Fan blades - 3 industrial style blades */}
       <group ref={fanRef}>
         {/* Fan blade 1 */}
-        <mesh position={[0.8, 0, 0]} rotation={[0, 0, 0]}>
-          <boxGeometry args={[1, 0.08, 0.4]} />
+        <mesh position={[0, 0, 0]} rotation={[0, 0, 0]}>
+          <boxGeometry args={[1.5, 0.08, 0.4]} />
           <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.6} />
         </mesh>
         
         {/* Fan blade 2 */}
-        <mesh position={[-0.4, 0, 0.7]} rotation={[0, Math.PI * 2/3, 0]}>
-          <boxGeometry args={[1, 0.08, 0.4]} />
+        <mesh position={[0, 0, 0]} rotation={[0, Math.PI * 2/3, 0]}>
+          <boxGeometry args={[1.5, 0.08, 0.4]} />
           <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.6} />
         </mesh>
         
         {/* Fan blade 3 */}
-        <mesh position={[-0.4, 0, -0.7]} rotation={[0, -Math.PI * 2/3, 0]}>
-          <boxGeometry args={[1, 0.08, 0.4]} />
+        <mesh position={[0, 0, 0]} rotation={[0, Math.PI * 4/3, 0]}>
+          <boxGeometry args={[1.5, 0.08, 0.4]} />
           <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.6} />
         </mesh>
       </group>

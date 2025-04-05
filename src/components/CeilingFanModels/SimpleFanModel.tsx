@@ -67,23 +67,23 @@ export const SimpleFanModel = ({
         />
       </mesh>
       
-      {/* Fan blades group - 3 blades */}
+      {/* Fan blades - 3 blades similar to original */}
       <group ref={fanRef}>
         {/* Fan blade 1 */}
-        <mesh position={[0.7, 0, 0]} rotation={[0, 0, 0]}>
-          <boxGeometry args={[1.2, 0.04, 0.25]} />
+        <mesh position={[0, 0, 0]} rotation={[0, 0, 0]}>
+          <boxGeometry args={[1.5, 0.05, 0.3]} />
           <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.8} />
         </mesh>
         
         {/* Fan blade 2 */}
-        <mesh position={[-0.35, 0, 0.6]} rotation={[0, Math.PI * 2/3, 0]}>
-          <boxGeometry args={[1.2, 0.04, 0.25]} />
+        <mesh position={[0, 0, 0]} rotation={[0, Math.PI * 2/3, 0]}>
+          <boxGeometry args={[1.5, 0.05, 0.3]} />
           <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.8} />
         </mesh>
         
         {/* Fan blade 3 */}
-        <mesh position={[-0.35, 0, -0.6]} rotation={[0, -Math.PI * 2/3, 0]}>
-          <boxGeometry args={[1.2, 0.04, 0.25]} />
+        <mesh position={[0, 0, 0]} rotation={[0, Math.PI * 4/3, 0]}>
+          <boxGeometry args={[1.5, 0.05, 0.3]} />
           <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.8} />
         </mesh>
       </group>

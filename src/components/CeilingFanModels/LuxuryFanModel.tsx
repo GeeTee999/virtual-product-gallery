@@ -101,34 +101,44 @@ export const LuxuryFanModel = ({
         );
       })}
       
-      {/* Fan blades group - 4 curved luxury blades */}
+      {/* Fan blades - 4 luxury blades */}
       <group ref={fanRef}>
+        {/* Fan blade 1 */}
+        <mesh position={[0, 0, 0]} rotation={[0, 0, 0]}>
+          <boxGeometry args={[1.5, 0.05, 0.3]} />
+          <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.4} />
+        </mesh>
+        
+        {/* Fan blade 2 */}
+        <mesh position={[0, 0, 0]} rotation={[0, Math.PI/2, 0]}>
+          <boxGeometry args={[1.5, 0.05, 0.3]} />
+          <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.4} />
+        </mesh>
+        
+        {/* Fan blade 3 */}
+        <mesh position={[0, 0, 0]} rotation={[0, Math.PI, 0]}>
+          <boxGeometry args={[1.5, 0.05, 0.3]} />
+          <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.4} />
+        </mesh>
+        
+        {/* Fan blade 4 */}
+        <mesh position={[0, 0, 0]} rotation={[0, Math.PI * 3/2, 0]}>
+          <boxGeometry args={[1.5, 0.05, 0.3]} />
+          <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.4} />
+        </mesh>
+        
+        {/* Decorative gold trim on blades */}
         {[0, 1, 2, 3].map((i) => {
           const angle = (i / 4) * Math.PI * 2;
-          const x = Math.cos(angle) * 0.6;
-          const z = Math.sin(angle) * 0.6;
-          
           return (
-            <group key={i} position={[x, 0, z]} rotation={[0, angle + Math.PI/2, 0]}>
-              {/* Blade with curved shape */}
-              <mesh rotation={[0, 0, Math.PI * 0.03]}>
-                <boxGeometry args={[1, 0.03, 0.25]} />
-                <meshStandardMaterial 
-                  color={getColorValue(bladeColor)} 
-                  metalness={0.3} 
-                  roughness={0.4} 
-                />
-              </mesh>
-              {/* Decorative trim along blade edge */}
-              <mesh position={[-0.48, 0, 0.125]} rotation={[0, 0, Math.PI * 0.03]}>
-                <boxGeometry args={[0.05, 0.03, 0.01]} />
-                <meshStandardMaterial 
-                  color={fanColor === "silver" || fanColor === "white" ? "#d4af37" : "#a67c00"} 
-                  metalness={0.9} 
-                  roughness={0.1} 
-                />
-              </mesh>
-            </group>
+            <mesh key={i} position={[0, 0, 0]} rotation={[0, angle, 0]}>
+              <boxGeometry args={[0.05, 0.03, 0.01]} />
+              <meshStandardMaterial 
+                color={fanColor === "silver" || fanColor === "white" ? "#d4af37" : "#a67c00"}
+                metalness={0.9} 
+                roughness={0.1} 
+              />
+            </mesh>
           );
         })}
       </group>

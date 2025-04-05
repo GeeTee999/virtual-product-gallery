@@ -67,22 +67,20 @@ export const ModernFanModel = ({
         />
       </mesh>
       
-      {/* Fan blades group - 5 curved blades */}
+      {/* Fan blades group - 5 blades similar to original */}
       <group ref={fanRef}>
-        {/* Create 5 curved blades */}
+        {/* 5 blades */}
         {[0, 1, 2, 3, 4].map((i) => {
           const angle = (i / 5) * Math.PI * 2;
-          const x = Math.cos(angle) * 0.5;
-          const z = Math.sin(angle) * 0.5;
-          
           return (
-            <group key={i} position={[x, 0, z]} rotation={[0, angle + Math.PI/2, 0]}>
-              <mesh>
-                {/* Curved blade - using BufferGeometry for the curved shape */}
-                <boxGeometry args={[0.8, 0.03, 0.22]} />
-                <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.5} />
-              </mesh>
-            </group>
+            <mesh 
+              key={i} 
+              position={[0, 0, 0]} 
+              rotation={[0, angle, 0]}
+            >
+              <boxGeometry args={[1.5, 0.04, 0.25]} />
+              <meshStandardMaterial color={getColorValue(bladeColor)} roughness={0.5} />
+            </mesh>
           );
         })}
       </group>
