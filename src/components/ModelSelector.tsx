@@ -1,5 +1,5 @@
+
 import React, { useRef, useEffect, useState } from "react";
-import useEmblaCarousel from "embla-carousel-react";
 
 export interface FanModel {
   id: string;
@@ -14,81 +14,175 @@ interface ModelSelectorProps {
 }
 
 const ModelSelector = ({ models, selectedModel, onSelectModel }: ModelSelectorProps) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: "center",
-    dragFree: true,
-  });
+  const [activeIndex, setActiveIndex] = useState(0);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const startY = useRef(0);
+  const currentRotation = useRef(0);
+  const lastRotation = useRef(0);
+  const sensitivity = 0.25; // Lower means more sensitive rotation
   
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const selectedModelIndex = models.findIndex(model => model.id === selectedModel);
-
+  // Find index of the selected model
   useEffect(() => {
-    if (emblaApi) {
-      const handleSelect = () => {
-        setSelectedIndex(emblaApi.selectedScrollSnap());
-      };
-      
-      setScrollSnaps(emblaApi.scrollSnapList());
-      emblaApi.on("select", handleSelect);
-      emblaApi.scrollTo(selectedModelIndex !== -1 ? selectedModelIndex : 0);
-      
-      return () => {
-        emblaApi.off("select", handleSelect);
-      };
+    const index = models.findIndex(model => model.id === selectedModel);
+    if (index !== -1) {
+      setActiveIndex(index);
+      // Set initial rotation to position selected model at 3 o'clock
+      const rotation = -index * (360 / models.length);
+      currentRotation.current = rotation;
+      lastRotation.current = rotation;
+      updateMenuRotation(rotation);
     }
-  }, [emblaApi, selectedModelIndex]);
+  }, [selectedModel, models]);
 
-  const getPositionClass = (index: number) => {
-    const diff = (index - selectedIndex + models.length) % models.length;
+  // Handle mouse/touch events for the dial
+  useEffect(() => {
+    const menuElement = menuRef.current;
+    if (!menuElement) return;
+
+    const handleStart = (clientY: number) => {
+      isDragging.current = true;
+      startY.current = clientY;
+      menuElement.style.transition = 'none';
+    };
+
+    const handleMove = (clientY: number) => {
+      if (!isDragging.current) return;
+      
+      const deltaY = clientY - startY.current;
+      const rotationDelta = deltaY * sensitivity;
+      
+      const newRotation = lastRotation.current + rotationDelta;
+      currentRotation.current = newRotation;
+      updateMenuRotation(newRotation);
+      
+      // Calculate new active index based on rotation
+      const itemAngle = 360 / models.length;
+      const normalizedRotation = ((newRotation % 360) + 360) % 360; // Keep between 0 and 360
+      const calculatedIndex = Math.round(normalizedRotation / itemAngle) % models.length;
+      const newIndex = (models.length - calculatedIndex) % models.length;
+      
+      if (newIndex !== activeIndex) {
+        setActiveIndex(newIndex);
+        onSelectModel(models[newIndex].id);
+      }
+    };
+
+    const handleEnd = () => {
+      if (!isDragging.current) return;
+      
+      isDragging.current = false;
+      lastRotation.current = currentRotation.current;
+      
+      // Snap to the closest model
+      const itemAngle = 360 / models.length;
+      const targetRotation = Math.round(currentRotation.current / itemAngle) * itemAngle;
+      
+      currentRotation.current = targetRotation;
+      lastRotation.current = targetRotation;
+      
+      menuElement.style.transition = 'transform 0.3s ease-out';
+      updateMenuRotation(targetRotation);
+    };
+
+    // Mouse events
+    const onMouseDown = (e: MouseEvent) => handleStart(e.clientY);
+    const onMouseMove = (e: MouseEvent) => handleMove(e.clientY);
+    const onMouseUp = () => handleEnd();
     
-    // Model is selected (3 o'clock position)
-    if (diff === 0) {
-      return "opacity-100 text-base font-semibold scale-110 translate-x-0";
+    // Touch events
+    const onTouchStart = (e: TouchEvent) => handleStart(e.touches[0].clientY);
+    const onTouchMove = (e: TouchEvent) => handleMove(e.touches[0].clientY);
+    const onTouchEnd = () => handleEnd();
+    
+    menuElement.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    
+    menuElement.addEventListener('touchstart', onTouchStart);
+    window.addEventListener('touchmove', onTouchMove);
+    window.addEventListener('touchend', onTouchEnd);
+    
+    return () => {
+      menuElement.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+      
+      menuElement.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [models, activeIndex, onSelectModel]);
+
+  // Update the visual rotation of the menu
+  const updateMenuRotation = (rotation: number) => {
+    if (menuRef.current) {
+      menuRef.current.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
     }
+  };
+
+  // Calculate position and style for each model item
+  const getItemStyle = (index: number) => {
+    const itemCount = models.length;
+    const angle = (index * 360) / itemCount;
+    const isActive = index === activeIndex;
     
-    // Model is at 1 o'clock (above)
-    if (diff === models.length - 1 || diff === -1) {
-      return "opacity-50 text-sm font-normal scale-90 translate-y-[-1rem] translate-x-[-0.5rem]";
-    }
-    
-    // Model is at 5 o'clock (below)
-    if (diff === 1) {
-      return "opacity-50 text-sm font-normal scale-90 translate-y-[1rem] translate-x-[-0.5rem]";
-    }
-    
-    // Other models are further away and less visible
-    return "opacity-30 text-xs font-light scale-75";
+    // Determine visual style based on position relative to active item
+    const getVisualStyle = () => {
+      if (isActive) {
+        return "scale-110 opacity-100 font-semibold text-base z-20";
+      }
+      
+      // Calculate position relative to active item (handle wrapping)
+      const distance = Math.abs(
+        ((index - activeIndex + itemCount) % itemCount) - 
+        ((activeIndex - index + itemCount) % itemCount)
+      );
+      
+      // Items at positions 1 o'clock and 5 o'clock
+      if (distance === 1) {
+        return "scale-90 opacity-60 text-sm z-10";
+      }
+      
+      // Further away items
+      return "scale-75 opacity-30 text-xs z-0";
+    };
+
+    return {
+      transform: `rotate(${-angle}deg) translate(80px) rotate(${angle}deg)`,
+      className: `absolute transform transition-all duration-300 p-2 cursor-pointer ${getVisualStyle()}`
+    };
   };
 
   return (
     <div className="absolute left-8 top-1/2 -translate-y-1/2 z-30">
-      <div className="relative h-40 w-24 overflow-hidden">
-        <div className="h-full w-full" ref={emblaRef}>
-          <div className="flex flex-col h-full">
-            {models.map((model, index) => (
-              <div 
-                key={model.id} 
-                className={`
-                  flex items-center justify-start transition-all duration-300 my-2
-                  cursor-pointer p-2 min-h-[3rem]
-                  ${getPositionClass(index)}
-                `}
-                onClick={() => {
+      <div className="relative h-40 w-24">
+        {/* Circular dial menu */}
+        <div 
+          ref={menuRef}
+          className="absolute left-1/2 top-1/2 w-40 h-40 transform -translate-x-1/2 -translate-y-1/2 transition-transform"
+          style={{ transform: "translate(-50%, -50%) rotate(0deg)" }}
+        >
+          {models.map((model, index) => {
+            const { transform, className } = getItemStyle(index);
+            return (
+              <div
+                key={model.id}
+                style={{ transform }}
+                className={className}
+                onClick={(e) => {
+                  e.stopPropagation();
                   onSelectModel(model.id);
-                  emblaApi?.scrollTo(index);
                 }}
               >
                 <span className="whitespace-nowrap">{model.name}</span>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
         
         {/* Connecting line to the fan */}
-        <div className="absolute top-1/2 -right-6 transform -translate-y-1/2">
+        <div className="absolute top-1/2 right-0 transform -translate-y-1/2">
           <div className="h-px w-6 bg-gray-300"></div>
         </div>
       </div>
