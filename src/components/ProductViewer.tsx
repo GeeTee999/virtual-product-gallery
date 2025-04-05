@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { Lightbulb } from "lucide-react";
 import ThreeScene from "./ThreeScene";
 import AnimatedColorSelector from "./AnimatedColorSelector";
-import ModelSelector from "./ModelSelector";
 import { MODEL_DATA } from "./CeilingFanModels";
 import { useIsMobile } from "@/hooks/use-mobile";
+import LuxuryModelSelector from "./LuxuryModelSelector";
 
 const COLOR_OPTIONS = [
   { name: "Black", value: "black", className: "bg-black" },
@@ -31,8 +31,8 @@ const ProductViewer = () => {
           modelType={modelType} 
         />
         
-        {/* Model selector */}
-        <ModelSelector 
+        {/* Luxury Model selector */}
+        <LuxuryModelSelector 
           models={MODEL_DATA}
           selectedModel={modelType}
           onSelectModel={setModelType}
@@ -66,9 +66,6 @@ const ProductViewer = () => {
             style={{ 
               width: '50px', 
               height: '50px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
             }}
           >
             <Lightbulb 
