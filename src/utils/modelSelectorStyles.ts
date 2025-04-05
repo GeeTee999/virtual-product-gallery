@@ -51,3 +51,15 @@ export const getColorButtonStyle = (isSelected: boolean, colorClass: string) => 
     `
   };
 };
+
+// Add circular menu styles
+export const circularMenuStyles = {
+  container: "relative",
+  menu: "fixed bottom-0",
+  floatingBtn: "block w-14 h-14 rounded-full bg-amber-500 shadow-md text-white text-center leading-[3.5rem] cursor-pointer outline-none",
+  activeFloatingBtn: "shadow-inner",
+  wrapper: "absolute left-0 top-0 p-0 m-0", 
+  menuItem: "absolute top-0 left-0 z-10 block no-underline text-white text-center w-12 h-12 rounded-full bg-black/10 transition-transform duration-300 ease-in-out hover:bg-black/30",
+  activeMenuItem: "transition-timing-function-cubic"
+};
+
