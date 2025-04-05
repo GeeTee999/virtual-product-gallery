@@ -6,6 +6,7 @@ import ColorSelector from "./ColorSelector";
 import FeatureToggle from "./FeatureToggle";
 
 const COLOR_OPTIONS = [
+  { name: "Black", value: "black", className: "bg-black" },
   { name: "Dark Wood", value: "dark", className: "bg-[#3a2618]" },
   { name: "Silver", value: "silver", className: "bg-[#a0a0a0]" },
   { name: "White", value: "white", className: "bg-white" },
