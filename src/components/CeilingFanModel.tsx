@@ -59,7 +59,7 @@ export const CeilingFanModel = ({ rotate = true, fanColor = "dark" }: CeilingFan
       </mesh>
       
       {/* Light */}
-      <mesh position={[0, 1, 0]}>
+      <mesh position={[0, 0.1, 0]}>
         <cylinderGeometry args={[0.2, 0.2, 0.1, 32]} />
         <meshStandardMaterial 
           color="white" 
