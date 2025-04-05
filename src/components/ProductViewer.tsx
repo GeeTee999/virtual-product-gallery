@@ -55,7 +55,7 @@ const ProductViewer = () => {
           <button
             onClick={() => setLedLightOn(prev => !prev)}
             className={`
-              p-2 rounded-full transition-all duration-300 flex items-center justify-center z-10
+              rounded-full transition-all duration-300 flex items-center justify-center z-10
               ${ledLightOn 
                 ? 'bg-amber-500 text-white shadow-amber-300 shadow-lg' 
                 : 'bg-gray-300 text-gray-600'}
@@ -63,10 +63,16 @@ const ProductViewer = () => {
             `}
             aria-label="Toggle LED Light"
             title="LED Light"
-            style={{ width: '36px', height: '36px' }}
+            style={{ 
+              width: '50px', 
+              height: '50px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
           >
             <Lightbulb 
-              size={20} 
+              size={24} 
               className={`${ledLightOn ? 'animate-pulse' : ''}`}
             />
           </button>
