@@ -65,13 +65,13 @@ export const CeilingFanModel = ({
         <meshStandardMaterial color={getColorValue(fanColor)} metalness={0.7} roughness={0.2} />
       </mesh>
       
-      {/* LED Light - made larger and emissive when turned on */}
+      {/* LED Light - made larger and more emissive when turned on */}
       <mesh position={[0, 0.03, 0]}>
-        <cylinderGeometry args={[0.35, 0.35, 0.15, 32]} />
+        <cylinderGeometry args={[0.7, 0.7, 0.15, 32]} />
         <meshStandardMaterial 
           color="white" 
           emissive={ledLightOn ? "#ffffff" : "#333333"}
-          emissiveIntensity={ledLightOn ? 2.0 : 0.1} 
+          emissiveIntensity={ledLightOn ? 5.0 : 0.1} 
           transparent 
           opacity={0.9} 
         />
