@@ -1,7 +1,7 @@
 
 import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment, ContactShadows } from "@react-three/drei";
+import { Environment, ContactShadows, OrbitControls } from "@react-three/drei";
 import CeilingFanModel from "./CeilingFanModel";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -15,10 +15,13 @@ const ThreeScene = ({ fanColor, bladeColor, ledLightOn }: ThreeSceneProps) => {
   const isMobile = useIsMobile();
   
   return (
-    <div className={`w-full ${isMobile ? 'h-[350px]' : 'h-[500px]'} mx-auto`}>
+    <div className={`w-full ${isMobile ? 'h-[450px]' : 'h-[550px]'} mx-auto`}>
       <Canvas 
         shadows 
-        camera={{ position: [0, 0, 5], fov: isMobile ? 60 : 50 }}
+        camera={{ 
+          position: [0, 0, isMobile ? 4.5 : 5], 
+          fov: isMobile ? 65 : 50 
+        }}
         dpr={[1, 2]} // Optimize for mobile performance
       >
         <ambientLight intensity={0.5} />
@@ -43,6 +46,17 @@ const ThreeScene = ({ fanColor, bladeColor, ledLightOn }: ThreeSceneProps) => {
             scale={10} 
             blur={2.5} 
             far={4} 
+          />
+          <OrbitControls 
+            enableZoom={true}
+            maxPolarAngle={Math.PI / 1.5}
+            minPolarAngle={Math.PI / 4}
+            enableDamping={true}
+            dampingFactor={0.05}
+            enablePan={false}
+            rotateSpeed={0.8}
+            minDistance={3}
+            maxDistance={7}
           />
         </Suspense>
       </Canvas>

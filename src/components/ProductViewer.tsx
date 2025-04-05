@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Lightbulb } from "lucide-react";
 import ThreeScene from "./ThreeScene";
-import ColorSelector from "./ColorSelector";
+import AnimatedColorSelector from "./AnimatedColorSelector";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const COLOR_OPTIONS = [
@@ -28,58 +28,47 @@ const ProductViewer = () => {
         />
       </div>
       
-      <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-3'} gap-3 mt-2`}>
-        {/* Body Color Selection */}
-        <ColorSelector 
-          title="Body Color"
-          options={COLOR_OPTIONS} 
-          selectedColor={bodyColor} 
-          onSelectColor={setBodyColor} 
-        />
+      <div className="flex justify-between items-center mt-2 px-2 relative">
+        {/* Body Color Selection - Left */}
+        <div className="flex-1 flex justify-start">
+          <AnimatedColorSelector 
+            title="Body"
+            options={COLOR_OPTIONS} 
+            selectedColor={bodyColor} 
+            onSelectColor={setBodyColor}
+            position="left"
+          />
+        </div>
         
-        {/* Blade Color Selection */}
-        <ColorSelector 
-          title="Blade Color"
-          options={COLOR_OPTIONS} 
-          selectedColor={bladeColor} 
-          onSelectColor={setBladeColor} 
-        />
-        
-        {/* Luxury LED Light Button */}
-        <div className="my-3 max-w-xs mx-auto w-full">
-          <div 
-            className={`
-              relative overflow-hidden rounded-xl shadow-md transition-all duration-300
-              ${ledLightOn ? 'bg-gradient-to-r from-amber-100 to-amber-200 border border-amber-300' : 'bg-gradient-to-r from-slate-100 to-slate-200'}
-              cursor-pointer
-            `}
+        {/* LED Light Button - Center */}
+        <div className="mx-4">
+          <button
             onClick={() => setLedLightOn(prev => !prev)}
+            className={`
+              p-2 rounded-full transition-all duration-300 flex items-center justify-center
+              ${ledLightOn 
+                ? 'bg-amber-500 text-white shadow-amber-300 shadow-lg' 
+                : 'bg-gray-300 text-gray-600'}
+            `}
+            aria-label="Toggle LED Light"
+            title="LED Light"
           >
-            <div className="p-4 flex items-center justify-center">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold mb-1">LED Light</h3>
-                
-                <div className={`
-                  p-2 rounded-full transition-all duration-300 mx-auto flex items-center justify-center
-                  ${ledLightOn ? 'bg-amber-500 text-white shadow-amber-300 shadow-lg' : 'bg-gray-300 text-gray-600'}
-                `}>
-                  <Lightbulb 
-                    size={20} 
-                    className={`${ledLightOn ? 'animate-pulse' : ''}`}
-                  />
-                </div>
-              </div>
-            </div>
-            
-            {/* Light effect when turned on */}
-            {ledLightOn && (
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-20 bg-amber-200 rounded-full blur-3xl"></div>
-              </div>
-            )}
-            
-            <div className={`absolute bottom-0 left-0 h-1 transition-all duration-300 ${ledLightOn ? 'bg-amber-400 w-full' : 'bg-gray-400 w-1/4'}`}></div>
-          </div>
+            <Lightbulb 
+              size={24} 
+              className={`${ledLightOn ? 'animate-pulse' : ''}`}
+            />
+          </button>
+        </div>
+        
+        {/* Blade Color Selection - Right */}
+        <div className="flex-1 flex justify-end">
+          <AnimatedColorSelector 
+            title="Blades"
+            options={COLOR_OPTIONS} 
+            selectedColor={bladeColor} 
+            onSelectColor={setBladeColor} 
+            position="right"
+          />
         </div>
       </div>
     </div>
