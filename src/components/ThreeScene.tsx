@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment, ContactShadows } from "@react-three/drei";
 import CeilingFanModel from "./CeilingFanModel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ThreeSceneProps {
   fanColor: string;
@@ -11,9 +12,15 @@ interface ThreeSceneProps {
 }
 
 const ThreeScene = ({ fanColor, bladeColor, ledLightOn }: ThreeSceneProps) => {
+  const isMobile = useIsMobile();
+  
   return (
-    <div className="w-full h-[500px] md:h-[600px]">
-      <Canvas shadows camera={{ position: [0, 0, 5], fov: 50 }}>
+    <div className={`w-full ${isMobile ? 'h-[350px]' : 'h-[500px]'} mx-auto`}>
+      <Canvas 
+        shadows 
+        camera={{ position: [0, 0, 5], fov: isMobile ? 60 : 50 }}
+        dpr={[1, 2]} // Optimize for mobile performance
+      >
         <ambientLight intensity={0.5} />
         <spotLight 
           position={[10, 10, 10]} 
