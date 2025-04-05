@@ -1,11 +1,11 @@
 
 import React, { useState } from "react";
-import { Lightbulb } from "lucide-react";
+import { Lightbulb, Plus, Palette } from "lucide-react";
 import ThreeScene from "./ThreeScene";
 import { MODEL_DATA } from "./CeilingFanModels";
 import { useIsMobile } from "@/hooks/use-mobile";
 import LuxuryModelSelector from "./LuxuryModelSelector";
-import { getColorButtonStyle } from "@/utils/modelSelectorStyles";
+import { getColorButtonStyle, getCircularMenuStyles } from "@/utils/modelSelectorStyles";
 
 const COLOR_OPTIONS = [
   { name: "Black", value: "black", className: "bg-black" },
@@ -19,7 +19,14 @@ const ProductViewer = () => {
   const [bladeColor, setBladeColor] = useState("dark");
   const [ledLightOn, setLedLightOn] = useState(false);
   const [modelType, setModelType] = useState("classic");
+  const [bodyMenuOpen, setBodyMenuOpen] = useState(false);
+  const [bladeMenuOpen, setBladeMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+
+  // Get styles for body color menu
+  const bodyMenuStyles = getCircularMenuStyles(bodyMenuOpen, 'left');
+  // Get styles for blade color menu
+  const bladeMenuStyles = getCircularMenuStyles(bladeMenuOpen, 'right');
 
   return (
     <div className="w-full mx-auto px-2 flex flex-col">
@@ -38,34 +45,12 @@ const ProductViewer = () => {
           onSelectModel={setModelType}
         />
         
-        {/* Control panel - positioned absolutely at the bottom of the scene */}
-        <div className="absolute bottom-4 left-0 right-0 flex justify-between items-center px-6">
-          {/* Body Color Selection - Left */}
-          <div className="flex flex-col items-center gap-2 z-20">
-            <span className="text-sm font-medium text-gray-700">Body</span>
-            <div className="flex gap-3">
-              {COLOR_OPTIONS.map((option) => {
-                const isSelected = bodyColor === option.value;
-                const { className } = getColorButtonStyle(isSelected, option.className);
-                
-                return (
-                  <button
-                    key={option.value}
-                    className={className}
-                    onClick={() => setBodyColor(option.value)}
-                    title={option.name}
-                    aria-label={`Set body color to ${option.name}`}
-                  />
-                );
-              })}
-            </div>
-          </div>
-          
-          {/* LED Light Button - Center */}
+        {/* LED Light Button - Center */}
+        <div className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
           <button
             onClick={() => setLedLightOn(prev => !prev)}
             className={`
-              rounded-full transition-all duration-300 flex items-center justify-center z-10
+              rounded-full transition-all duration-300 flex items-center justify-center
               ${ledLightOn 
                 ? 'bg-amber-500 text-white shadow-amber-300 shadow-lg' 
                 : 'bg-gray-300 text-gray-600'}
@@ -80,22 +65,103 @@ const ProductViewer = () => {
               className={`${ledLightOn ? 'animate-pulse' : ''}`}
             />
           </button>
-          
-          {/* Blade Color Selection - Right */}
-          <div className="flex flex-col items-center gap-2 z-20">
-            <span className="text-sm font-medium text-gray-700">Blades</span>
-            <div className="flex gap-3">
-              {COLOR_OPTIONS.map((option) => {
-                const isSelected = bladeColor === option.value;
-                const { className } = getColorButtonStyle(isSelected, option.className);
+        </div>
+        
+        {/* Body Color Circular Menu */}
+        <div className={bodyMenuStyles.menuClass}>
+          <div className={bodyMenuStyles.wrapperClass}>
+            {/* Toggle button */}
+            <button 
+              onClick={() => setBodyMenuOpen(!bodyMenuOpen)}
+              className={bodyMenuStyles.toggleClass}
+              aria-label="Toggle body color menu"
+            >
+              <Palette size={24} />
+            </button>
+            
+            {/* Circular backdrop */}
+            <div className={bodyMenuStyles.backdropClass}></div>
+            
+            {/* Menu items */}
+            <div className="absolute top-0 left-0 w-full h-full z-30">
+              {bodyMenuOpen && COLOR_OPTIONS.map((color, index) => {
+                const angle = -45 + (index * 45);
+                const radian = (angle * Math.PI) / 180;
+                const distance = 70;
+                const x = distance * Math.cos(radian);
+                const y = distance * Math.sin(radian);
+                const isSelected = bodyColor === color.value;
+                const { className } = getColorButtonStyle(isSelected, color.className);
                 
                 return (
                   <button
-                    key={option.value}
+                    key={color.value}
+                    style={{
+                      transform: `translate(${x}px, ${y}px)`,
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                      transitionDelay: `${index * 0.05}s`
+                    }}
                     className={className}
-                    onClick={() => setBladeColor(option.value)}
-                    title={option.name}
-                    aria-label={`Set blade color to ${option.name}`}
+                    onClick={() => {
+                      setBodyColor(color.value);
+                      setBodyMenuOpen(false);
+                    }}
+                    title={`Body: ${color.name}`}
+                    aria-label={`Set body color to ${color.name}`}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        
+        {/* Blade Color Circular Menu */}
+        <div className={bladeMenuStyles.menuClass}>
+          <div className={bladeMenuStyles.wrapperClass}>
+            {/* Toggle button */}
+            <button 
+              onClick={() => setBladeMenuOpen(!bladeMenuOpen)}
+              className={bladeMenuStyles.toggleClass}
+              aria-label="Toggle blade color menu"
+            >
+              <Plus size={24} className={`transition-transform duration-300 ${bladeMenuOpen ? 'rotate-45' : ''}`} />
+            </button>
+            
+            {/* Circular backdrop */}
+            <div className={bladeMenuStyles.backdropClass}></div>
+            
+            {/* Menu items */}
+            <div className="absolute top-0 left-0 w-full h-full z-30">
+              {bladeMenuOpen && COLOR_OPTIONS.map((color, index) => {
+                const angle = 135 + (index * 45);
+                const radian = (angle * Math.PI) / 180;
+                const distance = 70;
+                const x = distance * Math.cos(radian);
+                const y = distance * Math.sin(radian);
+                const isSelected = bladeColor === color.value;
+                const { className } = getColorButtonStyle(isSelected, color.className);
+                
+                return (
+                  <button
+                    key={color.value}
+                    style={{
+                      transform: `translate(${x}px, ${y}px)`,
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                      transitionDelay: `${index * 0.05}s`
+                    }}
+                    className={className}
+                    onClick={() => {
+                      setBladeColor(color.value);
+                      setBladeMenuOpen(false);
+                    }}
+                    title={`Blades: ${color.name}`}
+                    aria-label={`Set blade color to ${color.name}`}
                   />
                 );
               })}
