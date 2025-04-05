@@ -38,15 +38,17 @@ const ProductViewer = () => {
           modelType={modelType} 
         />
         
-        {/* Luxury Model selector */}
-        <LuxuryModelSelector 
-          models={MODEL_DATA}
-          selectedModel={modelType}
-          onSelectModel={setModelType}
-        />
+        {/* Luxury Model selector - moved lower */}
+        <div className="absolute top-16 left-8 z-40 w-1/3">
+          <LuxuryModelSelector 
+            models={MODEL_DATA}
+            selectedModel={modelType}
+            onSelectModel={setModelType}
+          />
+        </div>
         
-        {/* LED Light Button - Center */}
-        <div className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
+        {/* LED Light Button - Center Bottom */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20">
           <button
             onClick={() => setLedLightOn(prev => !prev)}
             className={`
@@ -68,24 +70,34 @@ const ProductViewer = () => {
         </div>
         
         {/* Body Color Circular Menu */}
-        <div className={bodyMenuStyles.menuClass}>
-          <div className={bodyMenuStyles.wrapperClass}>
+        <div className="fixed left-4 bottom-4 transition-all duration-300 z-30">
+          <div className={`relative ${bodyMenuOpen ? 'active' : ''}`}>
             {/* Toggle button */}
             <button 
               onClick={() => setBodyMenuOpen(!bodyMenuOpen)}
-              className={bodyMenuStyles.toggleClass}
+              className={`
+                flex items-center justify-center w-14 h-14 rounded-full 
+                bg-amber-500 text-white shadow-lg cursor-pointer z-40
+                hover:bg-amber-600 transition-all duration-300
+              `}
               aria-label="Toggle body color menu"
             >
-              <Palette size={24} />
+              <Palette size={24} className={`transition-transform duration-300 ${bodyMenuOpen ? 'rotate-45' : ''}`} />
             </button>
             
             {/* Circular backdrop */}
-            <div className={bodyMenuStyles.backdropClass}></div>
+            <div className={`
+              absolute top-0 left-0 w-14 h-14 rounded-full
+              bg-amber-500 transition-all duration-500 ease-in-out
+              ${bodyMenuOpen ? 'scale-[5]' : 'scale-100'}
+              z-20
+            `}></div>
             
             {/* Menu items */}
             <div className="absolute top-0 left-0 w-full h-full z-30">
               {bodyMenuOpen && COLOR_OPTIONS.map((color, index) => {
-                const angle = -45 + (index * 45);
+                const angles = [-45, -135, -225, -315]; // Adjusted angles for better distribution
+                const angle = angles[index];
                 const radian = (angle * Math.PI) / 180;
                 const distance = 70;
                 const x = distance * Math.cos(radian);
@@ -119,24 +131,34 @@ const ProductViewer = () => {
         </div>
         
         {/* Blade Color Circular Menu */}
-        <div className={bladeMenuStyles.menuClass}>
-          <div className={bladeMenuStyles.wrapperClass}>
+        <div className="fixed right-4 bottom-4 transition-all duration-300 z-30">
+          <div className={`relative ${bladeMenuOpen ? 'active' : ''}`}>
             {/* Toggle button */}
             <button 
               onClick={() => setBladeMenuOpen(!bladeMenuOpen)}
-              className={bladeMenuStyles.toggleClass}
+              className={`
+                flex items-center justify-center w-14 h-14 rounded-full 
+                bg-amber-500 text-white shadow-lg cursor-pointer z-40
+                hover:bg-amber-600 transition-all duration-300
+              `}
               aria-label="Toggle blade color menu"
             >
               <Plus size={24} className={`transition-transform duration-300 ${bladeMenuOpen ? 'rotate-45' : ''}`} />
             </button>
             
             {/* Circular backdrop */}
-            <div className={bladeMenuStyles.backdropClass}></div>
+            <div className={`
+              absolute top-0 left-0 w-14 h-14 rounded-full
+              bg-amber-500 transition-all duration-500 ease-in-out
+              ${bladeMenuOpen ? 'scale-[5]' : 'scale-100'}
+              z-20
+            `}></div>
             
             {/* Menu items */}
             <div className="absolute top-0 left-0 w-full h-full z-30">
               {bladeMenuOpen && COLOR_OPTIONS.map((color, index) => {
-                const angle = 135 + (index * 45);
+                const angles = [45, 135, 225, 315]; // Adjusted angles for better distribution
+                const angle = angles[index];
                 const radian = (angle * Math.PI) / 180;
                 const distance = 70;
                 const x = distance * Math.cos(radian);
