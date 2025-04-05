@@ -4,11 +4,27 @@ import { useFrame } from "@react-three/fiber";
 import { useGLTF, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
+interface CeilingFanModelProps {
+  rotate?: boolean;
+  fanColor?: string;
+}
+
 // Create a basic ceiling fan model since we don't have an actual GLTF model
-export const CeilingFanModel = ({ rotate = true }) => {
+export const CeilingFanModel = ({ rotate = true, fanColor = "dark" }: CeilingFanModelProps) => {
   const fanRef = useRef<THREE.Group>(null);
   const motorRef = useRef<THREE.Mesh>(null);
   const rotationSpeed = 0.01;
+
+  // Map the color values to actual hex colors
+  const getColorValue = () => {
+    switch(fanColor) {
+      case "black": return "#000000";
+      case "dark": return "#3a2618";
+      case "silver": return "#a0a0a0";
+      case "white": return "#ffffff";
+      default: return "#3a2618";
+    }
+  };
   
   useFrame((state, delta) => {
     if (rotate && fanRef.current) {
@@ -21,25 +37,25 @@ export const CeilingFanModel = ({ rotate = true }) => {
       {/* Motor housing */}
       <mesh ref={motorRef} position={[0, 0.2, 0]}>
         <cylinderGeometry args={[0.4, 0.4, 0.3, 32]} />
-        <meshStandardMaterial color="#a0a0a0" metalness={0.7} roughness={0.2} />
+        <meshStandardMaterial color={getColorValue()} metalness={0.7} roughness={0.2} />
       </mesh>
       
       {/* Center cap */}
       <mesh position={[0, 0.35, 0]}>
         <sphereGeometry args={[0.3, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
-        <meshStandardMaterial color="#a0a0a0" metalness={0.7} roughness={0.2} />
+        <meshStandardMaterial color={getColorValue()} metalness={0.7} roughness={0.2} />
       </mesh>
       
       {/* Rod */}
       <mesh position={[0, 1, 0]}>
         <cylinderGeometry args={[0.05, 0.05, 1.5, 16]} />
-        <meshStandardMaterial color="#a0a0a0" metalness={0.7} roughness={0.2} />
+        <meshStandardMaterial color={getColorValue()} metalness={0.7} roughness={0.2} />
       </mesh>
       
       {/* Ceiling mount */}
       <mesh position={[0, 1.8, 0]}>
         <cylinderGeometry args={[0.2, 0.2, 0.1, 32]} />
-        <meshStandardMaterial color="#a0a0a0" metalness={0.7} roughness={0.2} />
+        <meshStandardMaterial color={getColorValue()} metalness={0.7} roughness={0.2} />
       </mesh>
       
       {/* Light */}

@@ -29,7 +29,7 @@ const ProductViewer = () => {
   return (
     <div className="w-full max-w-6xl mx-auto px-4">
       <div className="relative">
-        <ThreeScene />
+        <ThreeScene fanColor={selectedColor} />
         
         {/* Navigation Controls */}
         <div className="absolute top-1/2 left-0 transform -translate-y-1/2">

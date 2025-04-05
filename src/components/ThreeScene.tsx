@@ -4,7 +4,11 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, ContactShadows } from "@react-three/drei";
 import CeilingFanModel from "./CeilingFanModel";
 
-const ThreeScene = () => {
+interface ThreeSceneProps {
+  fanColor: string;
+}
+
+const ThreeScene = ({ fanColor }: ThreeSceneProps) => {
   return (
     <div className="w-full h-[500px] md:h-[600px]">
       <Canvas shadows camera={{ position: [0, 0, 5], fov: 50 }}>
@@ -18,7 +22,7 @@ const ThreeScene = () => {
         />
         <pointLight position={[-10, -10, -10]} intensity={0.5} />
         <Suspense fallback={null}>
-          <CeilingFanModel />
+          <CeilingFanModel fanColor={fanColor} />
           <Environment preset="apartment" />
           <ContactShadows 
             position={[0, -1.5, 0]} 
