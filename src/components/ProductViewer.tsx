@@ -8,6 +8,7 @@ import LuxuryModelSelector from "./LuxuryModelSelector";
 import { 
   circularMenuStyles, 
   getCircularPosition, 
+  getQuarterCircleStyle,
   COLOR_OPTIONS 
 } from "@/utils/modelSelectorStyles";
 import { cn } from "@/lib/utils";
@@ -51,8 +52,8 @@ const ProductViewer = () => {
           modelType={modelType} 
         />
         
-        {/* Luxury Model selector - positioned lower */}
-        <div className="absolute top-48 left-8 z-40 w-1/3">
+        {/* Luxury Model selector - positioned at the top */}
+        <div className="absolute top-10 left-1/2 transform -translate-x-1/2 z-40">
           <LuxuryModelSelector 
             models={MODEL_DATA}
             selectedModel={modelType}
@@ -84,14 +85,16 @@ const ProductViewer = () => {
                 )}>
                   {COLOR_OPTIONS.map((option, index) => {
                     const position = getCircularPosition(index, COLOR_OPTIONS.length);
+                    const quarterStyle = getQuarterCircleStyle(index);
                     
                     return (
                       <button
                         key={option.value}
                         className={cn(
-                          circularMenuStyles.menuItem,
+                          "absolute w-12 h-12 transition-all duration-300 transform hover:scale-110 shadow-md",
                           option.className,
-                          bodyColor === option.value ? circularMenuStyles.menuItemActive : ''
+                          quarterStyle,
+                          bodyColor === option.value ? "ring-2 ring-amber-400" : ""
                         )}
                         style={position}
                         onClick={() => handleBodyColorSelect(option.value)}
@@ -145,14 +148,16 @@ const ProductViewer = () => {
                 )}>
                   {COLOR_OPTIONS.map((option, index) => {
                     const position = getCircularPosition(index, COLOR_OPTIONS.length);
+                    const quarterStyle = getQuarterCircleStyle(index);
                     
                     return (
                       <button
                         key={option.value}
                         className={cn(
-                          circularMenuStyles.menuItem,
+                          "absolute w-12 h-12 transition-all duration-300 transform hover:scale-110 shadow-md",
                           option.className,
-                          bladeColor === option.value ? circularMenuStyles.menuItemActive : ''
+                          quarterStyle,
+                          bladeColor === option.value ? "ring-2 ring-amber-400" : ""
                         )}
                         style={position}
                         onClick={() => handleBladeColorSelect(option.value)}

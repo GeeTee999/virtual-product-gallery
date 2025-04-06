@@ -44,13 +44,12 @@ export const circularMenuStyles = {
   trigger: "block w-14 h-14 rounded-full shadow-md text-center cursor-pointer outline-none transition-all duration-300 absolute top-0 left-0 z-10",
   menuWrapper: "absolute top-0 left-0 w-60 h-60 transform scale-0 opacity-0 transition-all duration-500 origin-center",
   menuWrapperActive: "scale-100 opacity-100",
-  menuItem: "absolute w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-md",
-  menuItemActive: "ring-2 ring-amber-400",
   menuBackdrop: "absolute w-full h-full rounded-full transition-all duration-500 ease-in-out opacity-0 scale-0"
 };
 
-// Function to get positions for color options in a circle
+// Function to get positions for color options in a quarter-circle arrangement
 export const getCircularPosition = (index: number, totalItems: number, radius: number = 80) => {
+  // Fixed positions for quarter circles in each quadrant
   let angle;
   
   // Place items in specific segments: top-left, top-right, bottom-left, bottom-right
@@ -70,6 +69,18 @@ export const getCircularPosition = (index: number, totalItems: number, radius: n
     transform: `translate(${x}px, ${y}px)`,
     transitionDelay: `${index * 60}ms`
   };
+};
+
+// Quarter-circle menu item styling with proper border radius
+export const getQuarterCircleStyle = (index: number) => {
+  // Border radius depends on which quadrant (0: top-left, 1: top-right, 2: bottom-left, 3: bottom-right)
+  switch (index) {
+    case 0: return "rounded-tl-full"; // Top-left
+    case 1: return "rounded-tr-full"; // Top-right
+    case 2: return "rounded-bl-full"; // Bottom-left
+    case 3: return "rounded-br-full"; // Bottom-right
+    default: return "";
+  }
 };
 
 // Color options configuration

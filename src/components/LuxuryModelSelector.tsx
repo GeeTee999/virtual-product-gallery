@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import ModelItem from "./ModelItem";
+import { cn } from "@/lib/utils";
 
 export interface FanModel {
   id: string;
@@ -44,55 +45,49 @@ const LuxuryModelSelector: React.FC<ModelSelectorProps> = ({
   };
 
   return (
-    <div className="absolute top-24 left-8 z-40 w-1/3">
-      <div className="relative h-24">
-        <AnimatePresence mode="wait">
-          {models.map((model, index) => (
-            <ModelItem
-              key={model.id}
-              model={model}
-              index={index}
-              activeIndex={activeIndex}
-              itemCount={models.length}
-              onSelect={() => {
-                setActiveIndex(index);
-                onSelectModel(model.id);
-              }}
-            />
-          ))}
-        </AnimatePresence>
-      </div>
-      
-      {/* Model navigation */}
-      <div className="flex items-center space-x-4 mt-2">
+    <div className="relative h-24 flex items-center">
+      <div className="relative flex items-center justify-center">
+        {/* Left arrow navigation */}
         <button 
           onClick={handlePrev}
-          className="p-1 rounded-full bg-amber-100 hover:bg-amber-200 transition-colors"
+          className={cn(
+            "absolute -left-16 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
+            "transition-all duration-200 hover:scale-110 z-20"
+          )}
+          aria-label="Previous model"
         >
-          <ChevronLeft className="h-5 w-5 text-amber-800" />
+          <ChevronLeft className="h-6 w-6 text-gray-700" />
         </button>
         
-        <div className="h-0.5 flex-grow bg-gradient-to-r from-amber-200 to-amber-500 rounded-full relative">
-          {models.map((_, idx) => (
-            <motion.div 
-              key={idx}
-              className={`absolute top-1/2 -translate-y-1/2 h-2 w-2 rounded-full 
-                ${idx === activeIndex ? 'bg-amber-600' : 'bg-amber-300'}`}
-              style={{ left: `${(idx / (models.length - 1)) * 100}%` }}
-            />
-          ))}
-          <motion.div 
-            className="absolute top-1/2 -translate-y-1/2 h-3 w-3 bg-amber-600 rounded-full shadow-md"
-            animate={{ left: `${(activeIndex / (models.length - 1)) * 100}%` }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-          />
+        {/* Model content */}
+        <div className="mx-24">
+          <AnimatePresence mode="wait">
+            {models.map((model, index) => (
+              <ModelItem
+                key={model.id}
+                model={model}
+                index={index}
+                activeIndex={activeIndex}
+                itemCount={models.length}
+                onSelect={() => {
+                  setActiveIndex(index);
+                  onSelectModel(model.id);
+                }}
+              />
+            ))}
+          </AnimatePresence>
         </div>
         
+        {/* Right arrow navigation */}
         <button 
           onClick={handleNext}
-          className="p-1 rounded-full bg-amber-100 hover:bg-amber-200 transition-colors"
+          className={cn(
+            "absolute -right-16 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
+            "transition-all duration-200 hover:scale-110 z-20"
+          )}
+          aria-label="Next model"
         >
-          <ChevronRight className="h-5 w-5 text-amber-800" />
+          <ChevronRight className="h-6 w-6 text-gray-700" />
         </button>
       </div>
     </div>
