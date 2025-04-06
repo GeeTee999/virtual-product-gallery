@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface ColorOption {
   name: string;
@@ -29,70 +30,86 @@ const AnimatedColorSelector = ({
   
   // Calculate positions for the circle of colors
   const calculatePosition = (index: number, total: number) => {
-    const angleStep = (2 * Math.PI) / total;
-    const angle = index * angleStep;
+    // Using quarter circle positioning - 4 positions as in the reference
+    let angle;
+    
+    // Place items in specific segments with top and bottom swapped
+    switch (index) {
+      case 0: angle = 225; break; // Bottom-left
+      case 1: angle = 315; break; // Bottom-right
+      case 2: angle = 135; break; // Top-left
+      case 3: angle = 45; break;  // Top-right
+      default: angle = 0;
+    }
+    
+    const radian = (angle * Math.PI) / 180;
     const radius = 50; // Distance from center button
     
-    const x = Math.cos(angle) * radius;
-    const y = Math.sin(angle) * radius;
+    const x = Math.cos(radian) * radius;
+    const y = Math.sin(radian) * radius;
     
-    return { x, y };
+    return { x, y, angle };
+  };
+
+  // Determine the quadrant styling (rounded corner)
+  const getQuadrantStyle = (index: number) => {
+    switch (index) {
+      case 0: return "rounded-bl-full"; // Bottom-left
+      case 1: return "rounded-br-full"; // Bottom-right
+      case 2: return "rounded-tl-full"; // Top-left
+      case 3: return "rounded-tr-full"; // Top-right
+      default: return "";
+    }
   };
   
   return (
-    <div 
-      className="relative"
-      // Changed to only close on explicit close, not on hover out
-      // onMouseLeave={() => setIsOpen(false)}
-    >
+    <div className="relative">
       {/* Main button showing selected color */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`
-          relative flex flex-col items-center rounded-full w-10 h-10 border-2 transition-all transform
-          ${selectedColor === selectedOption.value 
+        className={cn(
+          "relative flex flex-col items-center justify-center rounded-full w-12 h-12 border-2 transition-all transform",
+          selectedOption.className,
+          selectedColor === selectedOption.value 
             ? 'border-blue-500 scale-110 shadow-lg z-10' 
-            : 'border-gray-300'}
-          ${selectedOption.className}
-        `}
+            : 'border-gray-300'
+        )}
         aria-label={`Select ${title} color: currently ${selectedOption.name}`}
         title={`${title} Color: ${selectedOption.name}`}
       >
-        <span className="absolute -bottom-7 text-xs font-semibold text-center text-gray-700 w-16 -ml-3">{title}</span>
+        <span className="absolute -bottom-7 text-xs font-semibold text-center text-gray-700 whitespace-nowrap">
+          {title}
+        </span>
       </button>
       
-      {/* Circular color options */}
+      {/* Quadrant color options */}
       <div 
-        className={`
-          absolute top-0 left-0
-          w-full h-full
-          transition-all duration-300 transform
-          ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'}
-        `}
+        className={cn(
+          "absolute top-0 left-0 w-full h-full origin-center transform",
+          "transition-all duration-300",
+          isOpen ? "opacity-100 scale-100" : "opacity-0 scale-0 pointer-events-none"
+        )}
       >
         {options.map((option, index) => {
           const { x, y } = calculatePosition(index, options.length);
+          const quadrantStyle = getQuadrantStyle(index);
           
           return (
             <button
               key={option.value}
-              className={`
-                absolute w-8 h-8 rounded-full border-2 transition-all transform
-                ${selectedColor === option.value 
-                  ? 'border-blue-500 scale-110 shadow-md' 
-                  : 'border-gray-300 hover:scale-105'}
-                ${option.className}
-                animate-fade-in
-              `}
+              className={cn(
+                "absolute w-12 h-12 transition-all transform hover:scale-105",
+                "origin-center border border-gray-200 shadow-md",
+                option.className,
+                quadrantStyle,
+                selectedColor === option.value ? 'ring-2 ring-amber-400' : ''
+              )}
               style={{ 
                 transform: `translate(${x}px, ${y}px)`,
-                transitionDelay: `${index * 50}ms`,
-                zIndex: 20
+                transitionDelay: `${index * 60}ms`
               }}
               onClick={() => {
                 onSelectColor(option.value);
-                // Don't close the picker so user can select more colors
-                // setTimeout(() => setIsOpen(false), 500);
               }}
               aria-label={`Select ${option.name}`}
               title={option.name}
@@ -100,11 +117,11 @@ const AnimatedColorSelector = ({
           );
         })}
         
-        {/* Added explicit close button */}
+        {/* Done button */}
         {isOpen && (
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 text-xs bg-gray-200 px-2 py-1 rounded-full"
+            className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 text-xs bg-gray-200 px-2 py-1 rounded-full animate-fade-in"
             aria-label="Close color picker"
           >
             Done

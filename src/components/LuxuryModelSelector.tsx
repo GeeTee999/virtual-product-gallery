@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import ModelItem from "./ModelItem";
 import { cn } from "@/lib/utils";
 
@@ -47,16 +47,16 @@ const LuxuryModelSelector: React.FC<ModelSelectorProps> = ({
   return (
     <div className="relative h-24 flex items-center justify-center">
       <div className="relative flex items-center justify-center max-w-md w-full">
-        {/* Left arrow navigation - moved further left */}
+        {/* Left arrow navigation */}
         <button 
           onClick={handlePrev}
           className={cn(
-            "absolute -left-16 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
+            "absolute -left-24 p-3 rounded-full bg-white/90 hover:bg-amber-100 shadow-md",
             "transition-all duration-200 hover:scale-110 z-20"
           )}
           aria-label="Previous model"
         >
-          <ChevronLeft className="h-5 w-5 text-gray-700" />
+          <ChevronLeft className="h-4 w-4 text-gray-700" />
         </button>
         
         {/* Model content */}
@@ -78,16 +78,16 @@ const LuxuryModelSelector: React.FC<ModelSelectorProps> = ({
           </AnimatePresence>
         </div>
         
-        {/* Right arrow navigation - moved further right */}
+        {/* Right arrow navigation */}
         <button 
           onClick={handleNext}
           className={cn(
-            "absolute -right-16 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
+            "absolute -right-24 p-3 rounded-full bg-white/90 hover:bg-amber-100 shadow-md",
             "transition-all duration-200 hover:scale-110 z-20"
           )}
           aria-label="Next model"
         >
-          <ChevronRight className="h-5 w-5 text-gray-700" />
+          <ChevronRight className="h-4 w-4 text-gray-700" />
         </button>
       </div>
     </div>
