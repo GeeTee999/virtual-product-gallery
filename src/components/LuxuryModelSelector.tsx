@@ -47,11 +47,11 @@ const LuxuryModelSelector: React.FC<ModelSelectorProps> = ({
   return (
     <div className="relative h-24 flex items-center justify-center">
       <div className="relative flex items-center justify-center max-w-md w-full">
-        {/* Left arrow navigation */}
+        {/* Left arrow navigation - moved further left */}
         <button 
           onClick={handlePrev}
           className={cn(
-            "absolute -left-10 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
+            "absolute -left-16 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
             "transition-all duration-200 hover:scale-110 z-20"
           )}
           aria-label="Previous model"
@@ -78,11 +78,11 @@ const LuxuryModelSelector: React.FC<ModelSelectorProps> = ({
           </AnimatePresence>
         </div>
         
-        {/* Right arrow navigation */}
+        {/* Right arrow navigation - moved further right */}
         <button 
           onClick={handleNext}
           className={cn(
-            "absolute -right-10 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
+            "absolute -right-16 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
             "transition-all duration-200 hover:scale-110 z-20"
           )}
           aria-label="Next model"

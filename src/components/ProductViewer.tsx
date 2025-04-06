@@ -81,7 +81,8 @@ const ProductViewer = () => {
                 {/* Menu Items */}
                 <div className={cn(
                   circularMenuStyles.menuWrapper,
-                  bodyMenuActive ? circularMenuStyles.menuWrapperActive : ''
+                  bodyMenuActive ? circularMenuStyles.menuWrapperActive : '',
+                  "origin-center transform-center" // Ensure animation from center
                 )}>
                   {COLOR_OPTIONS.map((option, index) => {
                     const position = getCircularPosition(index, COLOR_OPTIONS.length);
@@ -92,6 +93,7 @@ const ProductViewer = () => {
                         key={option.value}
                         className={cn(
                           "absolute w-12 h-12 transition-all duration-300 transform hover:scale-110 shadow-md",
+                          "origin-center", // Animate from center
                           option.className,
                           quarterStyle,
                           bodyColor === option.value ? "ring-2 ring-amber-400" : ""
@@ -144,7 +146,8 @@ const ProductViewer = () => {
                 {/* Menu Items */}
                 <div className={cn(
                   circularMenuStyles.menuWrapper,
-                  bladeMenuActive ? circularMenuStyles.menuWrapperActive : ''
+                  bladeMenuActive ? circularMenuStyles.menuWrapperActive : '',
+                  "origin-center transform-center" // Ensure animation from center
                 )}>
                   {COLOR_OPTIONS.map((option, index) => {
                     const position = getCircularPosition(index, COLOR_OPTIONS.length);
@@ -155,6 +158,7 @@ const ProductViewer = () => {
                         key={option.value}
                         className={cn(
                           "absolute w-12 h-12 transition-all duration-300 transform hover:scale-110 shadow-md",
+                          "origin-center", // Animate from center
                           option.className,
                           quarterStyle,
                           bladeColor === option.value ? "ring-2 ring-amber-400" : ""
