@@ -122,23 +122,13 @@ const AnimatedColorSelector = ({
               }}
               onClick={() => {
                 onSelectColor(option.value);
+                setIsOpen(false); // Close menu after selection
               }}
               aria-label={`Select ${option.name}`}
               title={option.name}
             />
           );
         })}
-        
-        {/* Done button */}
-        {isOpen && (
-          <button
-            onClick={() => setIsOpen(false)}
-            className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 text-xs bg-gray-200 px-2 py-1 rounded-full animate-fade-in"
-            aria-label="Close color picker"
-          >
-            Done
-          </button>
-        )}
       </div>
     </div>
   );
