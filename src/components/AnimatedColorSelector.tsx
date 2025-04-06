@@ -28,17 +28,18 @@ const AnimatedColorSelector = ({
   // Find the selected color option to display in the button
   const selectedOption = options.find(opt => opt.value === selectedColor) || options[0];
   
-  // Calculate positions for the circle of colors
+  // Calculate positions for the color buttons
   const calculatePosition = (index: number, total: number) => {
-    // Using quarter circle positioning - 4 positions with top and bottom swapped
+    // Position each button in one of the four quadrants around the center button
     let angle;
     
-    // Place items in specific segments - swapped top and bottom positions
+    // Place items in specific segments with proper orientation
+    // The corners of the color buttons should face the center button
     switch (index) {
-      case 0: angle = 135; break; // Top-left
-      case 1: angle = 45; break;  // Top-right
-      case 2: angle = 225; break; // Bottom-left 
-      case 3: angle = 315; break; // Bottom-right
+      case 0: angle = position === "left" ? 45 : 135; break;   // Top quadrant
+      case 1: angle = position === "left" ? 315 : 225; break;  // Bottom quadrant
+      case 2: angle = position === "left" ? 135 : 45; break;   // Left/Right quadrant
+      case 3: angle = position === "left" ? 225 : 315; break;  // Left/Right quadrant
       default: angle = 0;
     }
     
@@ -53,12 +54,23 @@ const AnimatedColorSelector = ({
 
   // Determine the quadrant styling (rounded corner)
   const getQuadrantStyle = (index: number) => {
-    switch (index) {
-      case 0: return "rounded-tl-full"; // Top-left
-      case 1: return "rounded-tr-full"; // Top-right
-      case 2: return "rounded-bl-full"; // Bottom-left
-      case 3: return "rounded-br-full"; // Bottom-right
-      default: return "";
+    // Adjust the corner that faces the center button based on position and index
+    if (position === "left") {
+      switch (index) {
+        case 0: return "rounded-tr-full"; // Top button: right corner rounded
+        case 1: return "rounded-br-full"; // Bottom button: right corner rounded
+        case 2: return "rounded-bl-full"; // Left button: bottom corner rounded
+        case 3: return "rounded-tl-full"; // Right button: top corner rounded
+        default: return "";
+      }
+    } else { // position === "right"
+      switch (index) {
+        case 0: return "rounded-tl-full"; // Top button: left corner rounded
+        case 1: return "rounded-bl-full"; // Bottom button: left corner rounded
+        case 2: return "rounded-tr-full"; // Left button: top corner rounded
+        case 3: return "rounded-br-full"; // Right button: bottom corner rounded
+        default: return "";
+      }
     }
   };
   
