@@ -1,4 +1,3 @@
-
 export const getModelItemStyle = (index: number, activeIndex: number, itemCount: number) => {
   const angle = (index * 360) / itemCount;
   const radian = (angle * Math.PI) / 180;
@@ -38,28 +37,33 @@ export const getModelItemStyle = (index: number, activeIndex: number, itemCount:
   };
 };
 
-// New function for modern color button styles
-export const getColorButtonStyle = (isSelected: boolean, colorClass: string) => {
+// Enhanced circular menu styles inspired by CodePen example
+export const circularMenuStyles = {
+  container: "relative",
+  menu: "absolute z-30",
+  trigger: "block w-14 h-14 rounded-full shadow-md text-white text-center cursor-pointer outline-none transition-all duration-300",
+  menuWrapper: "absolute top-0 left-0 w-60 h-60 transform scale-0 opacity-0 transition-all duration-300 origin-center",
+  menuWrapperActive: "scale-100 opacity-100",
+  menuItem: "absolute w-24 h-24 rounded-full flex items-center justify-center transition-all duration-300 transform",
+  menuBackdrop: "absolute w-14 h-14 rounded-full transition-all duration-500 ease-in-out opacity-30 -z-10"
+};
+
+// Function to get positions for color options in a circle
+export const getCircularPosition = (index: number, totalItems: number, radius: number = 70) => {
+  const angle = ((index * (360 / totalItems)) * Math.PI) / 180;
+  const x = Math.cos(angle) * radius;
+  const y = Math.sin(angle) * radius;
+  
   return {
-    className: `
-      relative w-12 h-12 rounded-full transition-all duration-300
-      ${isSelected ? 'scale-110 shadow-lg z-20' : 'hover:scale-105 z-10'}
-      before:content-[''] before:absolute before:inset-0 before:rounded-full before:shadow-inner
-      after:content-[''] after:absolute after:inset-[3px] after:rounded-full after:${colorClass}
-      after:transform after:transition-transform after:duration-300 after:ease-out
-      ${isSelected ? 'ring-2 ring-amber-400 ring-offset-2' : ''}
-    `
+    transform: `translate(${x}px, ${y}px)`,
+    transitionDelay: `${index * 50}ms`
   };
 };
 
-// Add circular menu styles
-export const circularMenuStyles = {
-  container: "relative",
-  menu: "fixed bottom-0",
-  floatingBtn: "block w-14 h-14 rounded-full bg-amber-500 shadow-md text-white text-center leading-[3.5rem] cursor-pointer outline-none",
-  activeFloatingBtn: "shadow-inner",
-  wrapper: "absolute left-0 top-0 p-0 m-0", 
-  menuItem: "absolute top-0 left-0 z-10 block no-underline text-white text-center w-12 h-12 rounded-full bg-black/10 transition-transform duration-300 ease-in-out hover:bg-black/30",
-  activeMenuItem: "transition-timing-function-cubic"
-};
-
+// Color options configuration
+export const COLOR_OPTIONS = [
+  { name: "Black", value: "black", className: "bg-black" },
+  { name: "Dark Wood", value: "dark", className: "bg-[#3a2618]" },
+  { name: "Silver", value: "silver", className: "bg-[#a0a0a0]" },
+  { name: "White", value: "white", className: "bg-white" },
+];
