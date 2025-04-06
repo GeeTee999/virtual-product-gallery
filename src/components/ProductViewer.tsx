@@ -10,6 +10,7 @@ import {
   getCircularPosition, 
   COLOR_OPTIONS 
 } from "@/utils/modelSelectorStyles";
+import { cn } from "@/lib/utils";
 
 const ProductViewer = () => {
   const [bodyColor, setBodyColor] = useState("dark");
@@ -69,41 +70,35 @@ const ProductViewer = () => {
                 {/* Trigger Button */}
                 <button 
                   onClick={toggleBodyMenu}
-                  className={`${circularMenuStyles.trigger} ${selectedBodyColor.className}`}
+                  className={cn(
+                    circularMenuStyles.trigger,
+                    selectedBodyColor.className
+                  )}
                   aria-label="Toggle body color menu"
                 />
                 
                 {/* Menu Items */}
-                <div className={`
-                  ${circularMenuStyles.menuWrapper} 
-                  ${bodyMenuActive ? circularMenuStyles.menuWrapperActive : ''}
-                `}>
+                <div className={cn(
+                  circularMenuStyles.menuWrapper,
+                  bodyMenuActive ? circularMenuStyles.menuWrapperActive : ''
+                )}>
                   {COLOR_OPTIONS.map((option, index) => {
                     const position = getCircularPosition(index, COLOR_OPTIONS.length);
                     
                     return (
                       <button
                         key={option.value}
-                        className={`
-                          ${circularMenuStyles.menuItem}
-                          ${option.className}
-                          ${bodyColor === option.value ? 'ring-2 ring-amber-400 ring-offset-2' : ''}
-                        `}
+                        className={cn(
+                          circularMenuStyles.menuItem,
+                          option.className,
+                          bodyColor === option.value ? circularMenuStyles.menuItemActive : ''
+                        )}
                         style={position}
                         onClick={() => handleBodyColorSelect(option.value)}
                         title={option.name}
                       />
                     );
                   })}
-                  
-                  {/* Expanding background circle */}
-                  <div 
-                    className={`
-                      ${circularMenuStyles.menuBackdrop} 
-                      ${selectedBodyColor.className}
-                      ${bodyMenuActive ? 'scale-[4]' : 'scale-100'}
-                    `}
-                  />
                 </div>
               </div>
             </div>
@@ -112,20 +107,19 @@ const ProductViewer = () => {
           {/* LED Light Button - Center */}
           <button
             onClick={() => setLedLightOn(prev => !prev)}
-            className={`
-              rounded-full transition-all duration-300 flex items-center justify-center z-10
-              ${ledLightOn 
+            className={cn(
+              "rounded-full transition-all duration-300 flex items-center justify-center z-10",
+              "transform hover:scale-105 w-14 h-14",
+              ledLightOn 
                 ? 'bg-amber-500 text-white shadow-amber-300 shadow-lg' 
-                : 'bg-gray-300 text-gray-600'}
-              transform hover:scale-105
-              w-14 h-14
-            `}
+                : 'bg-gray-300 text-gray-600'
+            )}
             aria-label="Toggle LED Light"
             title="LED Light"
           >
             <Lightbulb 
               size={24} 
-              className={`${ledLightOn ? 'animate-pulse' : ''}`}
+              className={ledLightOn ? 'animate-pulse' : ''}
             />
           </button>
           
@@ -137,41 +131,35 @@ const ProductViewer = () => {
                 {/* Trigger Button */}
                 <button 
                   onClick={toggleBladeMenu}
-                  className={`${circularMenuStyles.trigger} ${selectedBladeColor.className}`}
+                  className={cn(
+                    circularMenuStyles.trigger,
+                    selectedBladeColor.className
+                  )}
                   aria-label="Toggle blade color menu"
                 />
                 
                 {/* Menu Items */}
-                <div className={`
-                  ${circularMenuStyles.menuWrapper} 
-                  ${bladeMenuActive ? circularMenuStyles.menuWrapperActive : ''}
-                `}>
+                <div className={cn(
+                  circularMenuStyles.menuWrapper,
+                  bladeMenuActive ? circularMenuStyles.menuWrapperActive : ''
+                )}>
                   {COLOR_OPTIONS.map((option, index) => {
                     const position = getCircularPosition(index, COLOR_OPTIONS.length);
                     
                     return (
                       <button
                         key={option.value}
-                        className={`
-                          ${circularMenuStyles.menuItem}
-                          ${option.className}
-                          ${bladeColor === option.value ? 'ring-2 ring-amber-400 ring-offset-2' : ''}
-                        `}
+                        className={cn(
+                          circularMenuStyles.menuItem,
+                          option.className,
+                          bladeColor === option.value ? circularMenuStyles.menuItemActive : ''
+                        )}
                         style={position}
                         onClick={() => handleBladeColorSelect(option.value)}
                         title={option.name}
                       />
                     );
                   })}
-                  
-                  {/* Expanding background circle */}
-                  <div 
-                    className={`
-                      ${circularMenuStyles.menuBackdrop}
-                      ${selectedBladeColor.className} 
-                      ${bladeMenuActive ? 'scale-[4]' : 'scale-100'}
-                    `}
-                  />
                 </div>
               </div>
             </div>

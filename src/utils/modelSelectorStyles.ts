@@ -37,26 +37,38 @@ export const getModelItemStyle = (index: number, activeIndex: number, itemCount:
   };
 };
 
-// Enhanced circular menu styles inspired by CodePen example
+// Enhanced circular menu styles inspired by the reference image
 export const circularMenuStyles = {
-  container: "relative",
+  container: "relative w-14 h-14",
   menu: "absolute z-30",
-  trigger: "block w-14 h-14 rounded-full shadow-md text-white text-center cursor-pointer outline-none transition-all duration-300",
-  menuWrapper: "absolute top-0 left-0 w-60 h-60 transform scale-0 opacity-0 transition-all duration-300 origin-center",
+  trigger: "block w-14 h-14 rounded-full shadow-md text-center cursor-pointer outline-none transition-all duration-300 absolute top-0 left-0 z-10",
+  menuWrapper: "absolute top-0 left-0 w-60 h-60 transform scale-0 opacity-0 transition-all duration-500 origin-center",
   menuWrapperActive: "scale-100 opacity-100",
-  menuItem: "absolute w-24 h-24 rounded-full flex items-center justify-center transition-all duration-300 transform",
-  menuBackdrop: "absolute w-14 h-14 rounded-full transition-all duration-500 ease-in-out opacity-30 -z-10"
+  menuItem: "absolute w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-md",
+  menuItemActive: "ring-2 ring-amber-400",
+  menuBackdrop: "absolute w-full h-full rounded-full transition-all duration-500 ease-in-out opacity-0 scale-0"
 };
 
 // Function to get positions for color options in a circle
-export const getCircularPosition = (index: number, totalItems: number, radius: number = 70) => {
-  const angle = ((index * (360 / totalItems)) * Math.PI) / 180;
-  const x = Math.cos(angle) * radius;
-  const y = Math.sin(angle) * radius;
+export const getCircularPosition = (index: number, totalItems: number, radius: number = 80) => {
+  let angle;
+  
+  // Place items in specific segments: top-left, top-right, bottom-left, bottom-right
+  switch (index) {
+    case 0: angle = 135; break; // Top-left
+    case 1: angle = 45; break;  // Top-right
+    case 2: angle = 225; break; // Bottom-left
+    case 3: angle = 315; break; // Bottom-right
+    default: angle = 0;
+  }
+  
+  const radian = (angle * Math.PI) / 180;
+  const x = Math.cos(radian) * radius;
+  const y = Math.sin(radian) * radius;
   
   return {
     transform: `translate(${x}px, ${y}px)`,
-    transitionDelay: `${index * 50}ms`
+    transitionDelay: `${index * 60}ms`
   };
 };
 
