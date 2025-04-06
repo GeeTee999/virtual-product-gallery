@@ -1,3 +1,4 @@
+
 export const getModelItemStyle = (index: number, activeIndex: number, itemCount: number) => {
   const angle = (index * 360) / itemCount;
   const radian = (angle * Math.PI) / 180;
@@ -49,15 +50,15 @@ export const circularMenuStyles = {
 
 // Function to get positions for color options in a quarter-circle arrangement
 export const getCircularPosition = (index: number, totalItems: number, radius: number = 80) => {
-  // Fixed positions for quarter circles in each quadrant
+  // Swap the positions of top and bottom quadrants as requested
   let angle;
   
-  // Place items in specific segments: top-left, top-right, bottom-left, bottom-right
+  // Place items in specific segments with top and bottom swapped
   switch (index) {
-    case 0: angle = 135; break; // Top-left
-    case 1: angle = 45; break;  // Top-right
-    case 2: angle = 225; break; // Bottom-left
-    case 3: angle = 315; break; // Bottom-right
+    case 0: angle = 225; break; // Bottom-left (was top-left)
+    case 1: angle = 315; break; // Bottom-right (was top-right)
+    case 2: angle = 135; break; // Top-left (was bottom-left)
+    case 3: angle = 45; break;  // Top-right (was bottom-right)
     default: angle = 0;
   }
   
@@ -73,12 +74,12 @@ export const getCircularPosition = (index: number, totalItems: number, radius: n
 
 // Quarter-circle menu item styling with proper border radius
 export const getQuarterCircleStyle = (index: number) => {
-  // Border radius depends on which quadrant (0: top-left, 1: top-right, 2: bottom-left, 3: bottom-right)
+  // Border radius depends on which quadrant (with swapped positions)
   switch (index) {
-    case 0: return "rounded-tl-full"; // Top-left
-    case 1: return "rounded-tr-full"; // Top-right
-    case 2: return "rounded-bl-full"; // Bottom-left
-    case 3: return "rounded-br-full"; // Bottom-right
+    case 0: return "rounded-bl-full"; // Bottom-left (was top-left)
+    case 1: return "rounded-br-full"; // Bottom-right (was top-right)
+    case 2: return "rounded-tl-full"; // Top-left (was bottom-left)
+    case 3: return "rounded-tr-full"; // Top-right (was bottom-right)
     default: return "";
   }
 };

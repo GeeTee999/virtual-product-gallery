@@ -45,22 +45,22 @@ const LuxuryModelSelector: React.FC<ModelSelectorProps> = ({
   };
 
   return (
-    <div className="relative h-24 flex items-center">
-      <div className="relative flex items-center justify-center">
+    <div className="relative h-24 flex items-center justify-center">
+      <div className="relative flex items-center justify-center max-w-md w-full">
         {/* Left arrow navigation */}
         <button 
           onClick={handlePrev}
           className={cn(
-            "absolute -left-16 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
+            "absolute -left-10 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
             "transition-all duration-200 hover:scale-110 z-20"
           )}
           aria-label="Previous model"
         >
-          <ChevronLeft className="h-6 w-6 text-gray-700" />
+          <ChevronLeft className="h-5 w-5 text-gray-700" />
         </button>
         
         {/* Model content */}
-        <div className="mx-24">
+        <div className="mx-16 text-center">
           <AnimatePresence mode="wait">
             {models.map((model, index) => (
               <ModelItem
@@ -82,12 +82,12 @@ const LuxuryModelSelector: React.FC<ModelSelectorProps> = ({
         <button 
           onClick={handleNext}
           className={cn(
-            "absolute -right-16 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
+            "absolute -right-10 p-2 rounded-full bg-white/80 hover:bg-amber-100 shadow-md",
             "transition-all duration-200 hover:scale-110 z-20"
           )}
           aria-label="Next model"
         >
-          <ChevronRight className="h-6 w-6 text-gray-700" />
+          <ChevronRight className="h-5 w-5 text-gray-700" />
         </button>
       </div>
     </div>

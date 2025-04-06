@@ -52,8 +52,8 @@ const ProductViewer = () => {
           modelType={modelType} 
         />
         
-        {/* Luxury Model selector - positioned at the top */}
-        <div className="absolute top-10 left-1/2 transform -translate-x-1/2 z-40">
+        {/* Luxury Model selector - positioned above the fan */}
+        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-40">
           <LuxuryModelSelector 
             models={MODEL_DATA}
             selectedModel={modelType}
