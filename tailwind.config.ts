@@ -85,6 +85,11 @@ export default {
 				"fade-in": {
 					"0%": { opacity: "0", transform: "scale(0.9)" },
 					"100%": { opacity: "1", transform: "scale(1)" }
+				},
+				"pulse": {
+					"0%": { opacity: "0.6" },
+					"50%": { opacity: "1" },
+					"100%": { opacity: "0.6" }
 				}
 			},
 			animation: {
@@ -92,6 +97,7 @@ export default {
 				"accordion-up": "accordion-up 0.2s ease-out",
 				"spin-on-click": "spin-on-click 0.5s ease-in-out",
 				"fade-in": "fade-in 0.3s ease-out",
+				"pulse": "pulse 1.5s ease-in-out infinite"
 			}
 		}
 	},

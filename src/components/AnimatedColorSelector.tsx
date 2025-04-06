@@ -30,15 +30,15 @@ const AnimatedColorSelector = ({
   
   // Calculate positions for the circle of colors
   const calculatePosition = (index: number, total: number) => {
-    // Using quarter circle positioning - 4 positions as in the reference
+    // Using quarter circle positioning - 4 positions with top and bottom swapped
     let angle;
     
-    // Place items in specific segments with top and bottom swapped
+    // Place items in specific segments - swapped top and bottom positions
     switch (index) {
-      case 0: angle = 225; break; // Bottom-left
-      case 1: angle = 315; break; // Bottom-right
-      case 2: angle = 135; break; // Top-left
-      case 3: angle = 45; break;  // Top-right
+      case 0: angle = 135; break; // Top-left
+      case 1: angle = 45; break;  // Top-right
+      case 2: angle = 225; break; // Bottom-left 
+      case 3: angle = 315; break; // Bottom-right
       default: angle = 0;
     }
     
@@ -54,10 +54,10 @@ const AnimatedColorSelector = ({
   // Determine the quadrant styling (rounded corner)
   const getQuadrantStyle = (index: number) => {
     switch (index) {
-      case 0: return "rounded-bl-full"; // Bottom-left
-      case 1: return "rounded-br-full"; // Bottom-right
-      case 2: return "rounded-tl-full"; // Top-left
-      case 3: return "rounded-tr-full"; // Top-right
+      case 0: return "rounded-tl-full"; // Top-left
+      case 1: return "rounded-tr-full"; // Top-right
+      case 2: return "rounded-bl-full"; // Bottom-left
+      case 3: return "rounded-br-full"; // Bottom-right
       default: return "";
     }
   };

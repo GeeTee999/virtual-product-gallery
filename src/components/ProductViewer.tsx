@@ -5,6 +5,8 @@ import ThreeScene from "./ThreeScene";
 import { MODEL_DATA } from "./CeilingFanModels";
 import { useIsMobile } from "@/hooks/use-mobile";
 import LuxuryModelSelector from "./LuxuryModelSelector";
+import ColorSelector from "./ColorSelector";
+import AnimatedColorSelector from "./AnimatedColorSelector";
 import { 
   circularMenuStyles, 
   getCircularPosition, 
@@ -52,8 +54,8 @@ const ProductViewer = () => {
           modelType={modelType} 
         />
         
-        {/* Luxury Model selector - positioned above the fan */}
-        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-40">
+        {/* Luxury Model selector - positioned above the fan with arrows on sides */}
+        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-40 w-full px-4 flex justify-center">
           <LuxuryModelSelector 
             models={MODEL_DATA}
             selectedModel={modelType}
@@ -67,45 +69,13 @@ const ProductViewer = () => {
           <div className="relative">
             <div className="flex flex-col items-center">
               <span className="text-sm font-medium text-gray-700 mb-2">Body</span>
-              <div className={circularMenuStyles.container}>
-                {/* Trigger Button */}
-                <button 
-                  onClick={toggleBodyMenu}
-                  className={cn(
-                    circularMenuStyles.trigger,
-                    selectedBodyColor.className
-                  )}
-                  aria-label="Toggle body color menu"
-                />
-                
-                {/* Menu Items */}
-                <div className={cn(
-                  circularMenuStyles.menuWrapper,
-                  bodyMenuActive ? circularMenuStyles.menuWrapperActive : '',
-                  "origin-center transform-center" // Ensure animation from center
-                )}>
-                  {COLOR_OPTIONS.map((option, index) => {
-                    const position = getCircularPosition(index, COLOR_OPTIONS.length);
-                    const quarterStyle = getQuarterCircleStyle(index);
-                    
-                    return (
-                      <button
-                        key={option.value}
-                        className={cn(
-                          "absolute w-12 h-12 transition-all duration-300 transform hover:scale-110 shadow-md",
-                          "origin-center", // Animate from center
-                          option.className,
-                          quarterStyle,
-                          bodyColor === option.value ? "ring-2 ring-amber-400" : ""
-                        )}
-                        style={position}
-                        onClick={() => handleBodyColorSelect(option.value)}
-                        title={option.name}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
+              <AnimatedColorSelector 
+                title="Body"
+                options={COLOR_OPTIONS}
+                selectedColor={bodyColor}
+                onSelectColor={setBodyColor}
+                position="left"
+              />
             </div>
           </div>
           
@@ -132,45 +102,13 @@ const ProductViewer = () => {
           <div className="relative">
             <div className="flex flex-col items-center">
               <span className="text-sm font-medium text-gray-700 mb-2">Blades</span>
-              <div className={circularMenuStyles.container}>
-                {/* Trigger Button */}
-                <button 
-                  onClick={toggleBladeMenu}
-                  className={cn(
-                    circularMenuStyles.trigger,
-                    selectedBladeColor.className
-                  )}
-                  aria-label="Toggle blade color menu"
-                />
-                
-                {/* Menu Items */}
-                <div className={cn(
-                  circularMenuStyles.menuWrapper,
-                  bladeMenuActive ? circularMenuStyles.menuWrapperActive : '',
-                  "origin-center transform-center" // Ensure animation from center
-                )}>
-                  {COLOR_OPTIONS.map((option, index) => {
-                    const position = getCircularPosition(index, COLOR_OPTIONS.length);
-                    const quarterStyle = getQuarterCircleStyle(index);
-                    
-                    return (
-                      <button
-                        key={option.value}
-                        className={cn(
-                          "absolute w-12 h-12 transition-all duration-300 transform hover:scale-110 shadow-md",
-                          "origin-center", // Animate from center
-                          option.className,
-                          quarterStyle,
-                          bladeColor === option.value ? "ring-2 ring-amber-400" : ""
-                        )}
-                        style={position}
-                        onClick={() => handleBladeColorSelect(option.value)}
-                        title={option.name}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
+              <AnimatedColorSelector 
+                title="Blades"
+                options={COLOR_OPTIONS}
+                selectedColor={bladeColor}
+                onSelectColor={setBladeColor}
+                position="right"
+              />
             </div>
           </div>
         </div>
