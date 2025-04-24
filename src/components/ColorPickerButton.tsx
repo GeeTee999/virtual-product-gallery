@@ -1,11 +1,12 @@
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { AwesomeButton } from "react-awesome-button";
+import "react-awesome-button/dist/styles.css"; // Import default styles
 import { cn } from "@/lib/utils";
 
 interface ColorTheme {
   name: string;
-  value: string;
+  type: string;
   className: string;
 }
 
@@ -17,54 +18,76 @@ interface ColorPickerButtonProps {
 }
 
 const colorThemes: ColorTheme[] = [
-  { name: "Dark", value: "dark", className: "bg-amber-800 hover:bg-amber-700" },
-  { name: "Black", value: "black", className: "bg-black hover:bg-gray-800" },
-  { name: "Silver", value: "silver", className: "bg-[#a0a0a0] hover:bg-[#909090]" },
-  { name: "White", value: "white", className: "bg-white hover:bg-gray-100 text-gray-800" }
+  { name: "Blue", type: "primary", className: "blue-theme" },
+  { name: "Red", type: "danger", className: "red-theme" },
+  { name: "Green", type: "secondary", className: "green-theme" },
+  { name: "Purple", type: "anchor", className: "purple-theme" }
 ];
+
+// Map theme names to actual color values for the 3D model
+const colorThemeToModelColor = {
+  "Blue": "silver",
+  "Red": "dark",
+  "Green": "white",
+  "Purple": "black"
+};
 
 const ColorPickerButton = ({ title, selectedColor, onColorSelect, position }: ColorPickerButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  
+  // Find the theme name from model color value
+  const getThemeNameFromColor = (modelColor: string) => {
+    const entry = Object.entries(colorThemeToModelColor).find(([_, value]) => value === modelColor);
+    return entry ? entry[0] : "Blue"; // Default to Blue
+  };
+
+  // Get the current theme name based on selected color
+  const currentThemeName = getThemeNameFromColor(selectedColor);
+  const currentTheme = colorThemes.find(theme => theme.name === currentThemeName) || colorThemes[0];
 
   return (
-    <div className="relative">
-      <div className="flex flex-col items-center">
-        <span className="text-sm font-medium text-gray-700 mb-2">{title}</span>
-        
-        {/* Main color button */}
-        <Button
-          onClick={() => setIsOpen(!isOpen)}
-          className={cn(
-            "w-12 h-12 rounded-full p-0 transition-all duration-300",
-            colorThemes.find(t => t.value === selectedColor)?.className
-          )}
-          aria-label={`Select ${title} color`}
-        />
-      </div>
+    <div style={{ padding: '10px', textAlign: 'center' }}>
+      <h3 style={{ marginBottom: '10px', fontSize: '14px' }}>{title}</h3>
+      
+      {/* Main color button */}
+      <AwesomeButton
+        type={currentTheme.type}
+        className={cn(currentTheme.className, "main-button")}
+        onPress={() => setIsOpen(!isOpen)}
+      >
+        {currentThemeName}
+      </AwesomeButton>
 
       {/* Color options */}
       <div className={cn(
-        "absolute bottom-0 transform transition-all duration-300",
-        position === "left" ? "left-16" : "right-16",
-        isOpen ? "opacity-100 scale-100" : "opacity-0 scale-0 pointer-events-none"
-      )}>
-        <div className="flex gap-2">
-          {colorThemes.map((theme) => (
-            <Button
-              key={theme.value}
-              className={cn(
-                "w-10 h-10 rounded-full p-0 transform transition-all hover:scale-110",
-                theme.className,
-                selectedColor === theme.value && "ring-2 ring-blue-500"
-              )}
-              onClick={() => {
-                onColorSelect(theme.value);
-                setIsOpen(false);
-              }}
-              aria-label={`Select ${theme.name} color`}
-            />
-          ))}
-        </div>
+        "color-options",
+        position === "left" ? "left-position" : "right-position",
+        isOpen ? "options-visible" : "options-hidden"
+      )}
+      style={{
+        display: isOpen ? 'flex' : 'none',
+        position: 'absolute',
+        flexDirection: 'column',
+        gap: '8px',
+        marginTop: '10px',
+        transition: 'all 0.3s ease',
+        zIndex: 100,
+      }}>
+        {colorThemes.map((theme) => (
+          <AwesomeButton
+            key={theme.name}
+            type={theme.type}
+            className={theme.className}
+            size="small"
+            onPress={() => {
+              onColorSelect(colorThemeToModelColor[theme.name]);
+              setIsOpen(false);
+            }}
+            style={{ minWidth: '100px' }}
+          >
+            {theme.name}
+          </AwesomeButton>
+        ))}
       </div>
     </div>
   );

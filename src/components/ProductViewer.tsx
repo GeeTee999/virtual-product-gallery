@@ -7,6 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import LuxuryModelSelector from "./LuxuryModelSelector";
 import ColorPickerButton from "./ColorPickerButton";
 import { cn } from "@/lib/utils";
+import "./CustomButton.css"; // Import custom styles for the buttons
 
 const ProductViewer = () => {
   const [bodyColor, setBodyColor] = useState("dark");
@@ -37,12 +38,14 @@ const ProductViewer = () => {
         {/* Control panel with color pickers and LED light */}
         <div className="absolute bottom-4 left-0 right-0 flex justify-between items-center px-6">
           {/* Body Color Selection - Left */}
-          <ColorPickerButton
-            title="Body"
-            selectedColor={bodyColor}
-            onColorSelect={setBodyColor}
-            position="left"
-          />
+          <div className="z-30">
+            <ColorPickerButton
+              title="Body Color"
+              selectedColor={bodyColor}
+              onColorSelect={setBodyColor}
+              position="left"
+            />
+          </div>
           
           {/* LED Light Button - Center */}
           <button
@@ -64,12 +67,14 @@ const ProductViewer = () => {
           </button>
           
           {/* Blade Color Selection - Right */}
-          <ColorPickerButton
-            title="Blades"
-            selectedColor={bladeColor}
-            onColorSelect={setBladeColor}
-            position="right"
-          />
+          <div className="z-30">
+            <ColorPickerButton
+              title="Blade Color"
+              selectedColor={bladeColor}
+              onColorSelect={setBladeColor}
+              position="right"
+            />
+          </div>
         </div>
       </div>
     </div>
