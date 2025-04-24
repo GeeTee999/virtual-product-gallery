@@ -5,9 +5,8 @@ import ThreeScene from "./ThreeScene";
 import { MODEL_DATA } from "./CeilingFanModels";
 import { useIsMobile } from "@/hooks/use-mobile";
 import LuxuryModelSelector from "./LuxuryModelSelector";
-import ColorPickerButton from "./ColorPickerButton";
+import AnimatedFanColorPicker from "./AnimatedFanColorPicker";
 import { cn } from "@/lib/utils";
-import "./CustomButton.css"; // Import custom styles for the buttons
 
 const ProductViewer = () => {
   const [bodyColor, setBodyColor] = useState("dark");
@@ -38,8 +37,8 @@ const ProductViewer = () => {
         {/* Control panel with color pickers and LED light */}
         <div className="absolute bottom-4 left-0 right-0 flex justify-between items-center px-6">
           {/* Body Color Selection - Left */}
-          <div className="z-30">
-            <ColorPickerButton
+          <div className="z-30 relative">
+            <AnimatedFanColorPicker
               title="Body Color"
               selectedColor={bodyColor}
               onColorSelect={setBodyColor}
@@ -67,8 +66,8 @@ const ProductViewer = () => {
           </button>
           
           {/* Blade Color Selection - Right */}
-          <div className="z-30">
-            <ColorPickerButton
+          <div className="z-30 relative">
+            <AnimatedFanColorPicker
               title="Blade Color"
               selectedColor={bladeColor}
               onColorSelect={setBladeColor}

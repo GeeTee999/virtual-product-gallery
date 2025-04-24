@@ -28,6 +28,42 @@
   --button-anchor-color-hover: #9c27b0;
 }
 
+/* Fan animation effects */
+@keyframes fan-open {
+  from {
+    transform: rotate(0deg) scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(var(--fan-angle)) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fan-close {
+  from {
+    transform: rotate(var(--fan-angle)) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(0deg) scale(0);
+    opacity: 0;
+  }
+}
+
+.fan-option {
+  position: absolute;
+  transform-origin: bottom center;
+}
+
+.fan-option-open {
+  animation: fan-open 0.3s forwards;
+}
+
+.fan-option-close {
+  animation: fan-close 0.3s forwards;
+}
+
 .main-button {
   height: 40px !important;
   min-width: 100px !important;
