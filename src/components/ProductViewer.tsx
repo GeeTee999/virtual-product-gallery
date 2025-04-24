@@ -7,8 +7,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import LuxuryModelSelector from "./LuxuryModelSelector";
 import AnimatedColorSelector from "./AnimatedColorSelector";
 import { 
-  getCircularPosition, 
-  getQuarterCircleStyle,
   COLOR_OPTIONS 
 } from "@/utils/modelSelectorStyles";
 import { cn } from "@/lib/utils";
