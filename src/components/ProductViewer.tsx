@@ -5,6 +5,7 @@ import ThreeScene from "./ThreeScene";
 import { MODEL_DATA } from "./CeilingFanModels";
 import { useIsMobile } from "@/hooks/use-mobile";
 import LuxuryModelSelector from "./LuxuryModelSelector";
+import ColorPickerButton from "./ColorPickerButton";
 import { cn } from "@/lib/utils";
 
 const ProductViewer = () => {
@@ -33,9 +34,17 @@ const ProductViewer = () => {
           />
         </div>
         
-        {/* Control panel - now only has the LED Light button */}
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center">
-          {/* LED Light Button */}
+        {/* Control panel with color pickers and LED light */}
+        <div className="absolute bottom-4 left-0 right-0 flex justify-between items-center px-6">
+          {/* Body Color Selection - Left */}
+          <ColorPickerButton
+            title="Body"
+            selectedColor={bodyColor}
+            onColorSelect={setBodyColor}
+            position="left"
+          />
+          
+          {/* LED Light Button - Center */}
           <button
             onClick={() => setLedLightOn(prev => !prev)}
             className={cn(
@@ -53,6 +62,14 @@ const ProductViewer = () => {
               className={ledLightOn ? 'animate-pulse' : ''}
             />
           </button>
+          
+          {/* Blade Color Selection - Right */}
+          <ColorPickerButton
+            title="Blades"
+            selectedColor={bladeColor}
+            onColorSelect={setBladeColor}
+            position="right"
+          />
         </div>
       </div>
     </div>
