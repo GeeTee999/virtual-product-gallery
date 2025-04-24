@@ -5,10 +5,8 @@ import ThreeScene from "./ThreeScene";
 import { MODEL_DATA } from "./CeilingFanModels";
 import { useIsMobile } from "@/hooks/use-mobile";
 import LuxuryModelSelector from "./LuxuryModelSelector";
-import ColorSelector from "./ColorSelector";
 import AnimatedColorSelector from "./AnimatedColorSelector";
 import { 
-  circularMenuStyles, 
   getCircularPosition, 
   getQuarterCircleStyle,
   COLOR_OPTIONS 
@@ -20,29 +18,7 @@ const ProductViewer = () => {
   const [bladeColor, setBladeColor] = useState("dark");
   const [ledLightOn, setLedLightOn] = useState(false);
   const [modelType, setModelType] = useState("classic");
-  const [bodyMenuActive, setBodyMenuActive] = useState(false);
-  const [bladeMenuActive, setBladeMenuActive] = useState(false);
   const isMobile = useIsMobile();
-
-  const toggleBodyMenu = () => setBodyMenuActive(prev => !prev);
-  const toggleBladeMenu = () => setBladeMenuActive(prev => !prev);
-
-  const handleBodyColorSelect = (color: string) => {
-    setBodyColor(color);
-    setBodyMenuActive(false);
-  };
-
-  const handleBladeColorSelect = (color: string) => {
-    setBladeColor(color);
-    setBladeMenuActive(false);
-  };
-
-  const getSelectedColor = (colorValue: string) => {
-    return COLOR_OPTIONS.find(option => option.value === colorValue) || COLOR_OPTIONS[0];
-  };
-
-  const selectedBodyColor = getSelectedColor(bodyColor);
-  const selectedBladeColor = getSelectedColor(bladeColor);
 
   return (
     <div className="w-full mx-auto px-2 flex flex-col">
