@@ -5,10 +5,6 @@ import ThreeScene from "./ThreeScene";
 import { MODEL_DATA } from "./CeilingFanModels";
 import { useIsMobile } from "@/hooks/use-mobile";
 import LuxuryModelSelector from "./LuxuryModelSelector";
-import AnimatedColorSelector from "./AnimatedColorSelector";
-import { 
-  COLOR_OPTIONS 
-} from "@/utils/modelSelectorStyles";
 import { cn } from "@/lib/utils";
 
 const ProductViewer = () => {
@@ -37,23 +33,9 @@ const ProductViewer = () => {
           />
         </div>
         
-        {/* Control panel - positioned absolutely at the bottom of the scene */}
-        <div className="absolute bottom-4 left-0 right-0 flex justify-between items-center px-6">
-          {/* Body Color Selection - Left */}
-          <div className="relative">
-            <div className="flex flex-col items-center">
-              <span className="text-sm font-medium text-gray-700 mb-2">Body</span>
-              <AnimatedColorSelector 
-                title="Body"
-                options={COLOR_OPTIONS}
-                selectedColor={bodyColor}
-                onSelectColor={setBodyColor}
-                position="left"
-              />
-            </div>
-          </div>
-          
-          {/* LED Light Button - Center */}
+        {/* Control panel - now only has the LED Light button */}
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center">
+          {/* LED Light Button */}
           <button
             onClick={() => setLedLightOn(prev => !prev)}
             className={cn(
@@ -71,20 +53,6 @@ const ProductViewer = () => {
               className={ledLightOn ? 'animate-pulse' : ''}
             />
           </button>
-          
-          {/* Blade Color Selection - Right */}
-          <div className="relative">
-            <div className="flex flex-col items-center">
-              <span className="text-sm font-medium text-gray-700 mb-2">Blades</span>
-              <AnimatedColorSelector 
-                title="Blades"
-                options={COLOR_OPTIONS}
-                selectedColor={bladeColor}
-                onSelectColor={setBladeColor}
-                position="right"
-              />
-            </div>
-          </div>
         </div>
       </div>
     </div>
