@@ -24,7 +24,7 @@ const ColorSelector = ({
   return (
     <div className="my-3 relative w-64 h-64 mx-auto">
       <div className="absolute inset-0 flex items-center justify-center">
-        {/* Central Circle */}
+        {/* Central Button */}
         <button 
           className={cn(
             "w-16 h-16 rounded-full shadow-xl",
